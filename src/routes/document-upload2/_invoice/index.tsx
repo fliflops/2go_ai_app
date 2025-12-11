@@ -5,7 +5,7 @@ import { createFileRoute, useNavigate } from '@tanstack/react-router';
 import { ColumnDef, PaginationState } from '@tanstack/react-table';
 import { useState } from 'react';
 
-export const Route = createFileRoute('/document-upload/invoice/')({
+export const Route = createFileRoute('/document-upload2/_invoice/')({
   component: RouteComponent,
 })
 

@@ -2,7 +2,6 @@ import {Link} from '@tanstack/react-router';
 import {
   Sidebar,
   SidebarContent,
-  //SidebarFooter,
   SidebarGroup,
   SidebarHeader,
   SidebarGroupLabel,
@@ -26,12 +25,12 @@ const data = [
         group_name: 'Document Upload',
         menu_items: [
             {
-                name: 'Invoice Upload',
-                path: '/document-upload/'
+                name: 'Contract Upload',
+                path: '/document-upload/invoice'
             },
             {
-                name:'Invoice List',
-                path:'/document-upload/invoice'
+                name:'Invoice Upload',
+                path:'/document-upload/contract'
             }
         ]
     }

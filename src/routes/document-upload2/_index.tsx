@@ -1,7 +1,7 @@
 import { DropzoneUpload } from '@/components/DropzoneUpload'
 import { createFileRoute } from '@tanstack/react-router'
 
-export const Route = createFileRoute('/document-upload/')({
+export const Route = createFileRoute('/document-upload2/_index')({
   component: RouteComponent,
 })
 

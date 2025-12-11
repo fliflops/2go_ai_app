@@ -6,7 +6,7 @@ import { createFileRoute, useParams } from '@tanstack/react-router'
 import React from 'react'
 
 
-export const Route = createFileRoute('/document-upload/invoice/$doc_id')({
+export const Route = createFileRoute('/document-upload2/_invoice/$doc_id')({
   component: RouteComponent,
 })
 
@@ -230,7 +230,7 @@ function RouteComponent() {
 			 
 			## Invoice Document
 			${invoice}
-			`;
+			`
 
 			const res = await validateInvoice(prompt);
 			if (!res.ok) {
@@ -266,7 +266,7 @@ function RouteComponent() {
 					<div className='flex flex-col gap-1'>
 						<p className='text-slate-600'>Validated Content</p>
 						<JsonViewer isLoading={isPending} maxHeight='200px' data={!jsonData ? {
-							message: "No Data"
+							message: 'No Data'
 						} : jsonData}/>
 					</div>
 					
