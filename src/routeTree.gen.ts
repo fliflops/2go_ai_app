@@ -8,6 +8,8 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from '@tanstack/react-router'
+
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as DocumentUpload2IndexRouteImport } from './routes/document-upload2/_index'
@@ -41,6 +43,13 @@ import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
 
+const DocumentUpload2RouteImport = createFileRoute('/document-upload2')()
+
+const DocumentUpload2Route = DocumentUpload2RouteImport.update({
+  id: '/document-upload2',
+  path: '/document-upload2',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -275,6 +284,7 @@ export interface FileRoutesById {
   '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
+  '/document-upload2': typeof DocumentUpload2RouteWithChildren
   '/document-upload2/_index': typeof DocumentUpload2IndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
@@ -375,6 +385,7 @@ export interface FileRouteTypes {
     | '/demo/tanstack-query'
     | '/document-upload/contract'
     | '/document-upload/invoice'
+    | '/document-upload2'
     | '/document-upload2/_index'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
@@ -409,6 +420,7 @@ export interface RootRouteChildren {
   DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DocumentUploadContractRoute: typeof DocumentUploadContractRoute
   DocumentUploadInvoiceRoute: typeof DocumentUploadInvoiceRoute
+  DocumentUpload2Route: typeof DocumentUpload2RouteWithChildren
   ApiDocumentUploadContractRoute: typeof ApiDocumentUploadContractRoute
   ApiDocumentUploadInvoiceRoute: typeof ApiDocumentUploadInvoiceRoute
   ApiInvoiceDoc_idRoute: typeof ApiInvoiceDoc_idRoute
@@ -431,6 +443,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/document-upload2': {
+      id: '/document-upload2'
+      path: '/document-upload2'
+      fullPath: '/document-upload2'
+      preLoaderRoute: typeof DocumentUpload2RouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -440,7 +459,7 @@ declare module '@tanstack/react-router' {
     }
     '/document-upload2/_index': {
       id: '/document-upload2/_index'
-      path: ''
+      path: '/document-upload2'
       fullPath: '/document-upload2'
       preLoaderRoute: typeof DocumentUpload2IndexRouteImport
       parentRoute: typeof DocumentUpload2Route
@@ -651,6 +670,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface DocumentUpload2RouteChildren {
+  DocumentUpload2IndexRoute: typeof DocumentUpload2IndexRoute
+  DocumentUpload2ContractRoute: typeof DocumentUpload2ContractRoute
+  DocumentUpload2InvoiceRoute: typeof DocumentUpload2InvoiceRoute
+  DocumentUpload2InvoiceDoc_idRoute: typeof DocumentUpload2InvoiceDoc_idRoute
+  DocumentUpload2InvoiceIndexRoute: typeof DocumentUpload2InvoiceIndexRoute
+}
+
+const DocumentUpload2RouteChildren: DocumentUpload2RouteChildren = {
+  DocumentUpload2IndexRoute: DocumentUpload2IndexRoute,
+  DocumentUpload2ContractRoute: DocumentUpload2ContractRoute,
+  DocumentUpload2InvoiceRoute: DocumentUpload2InvoiceRoute,
+  DocumentUpload2InvoiceDoc_idRoute: DocumentUpload2InvoiceDoc_idRoute,
+  DocumentUpload2InvoiceIndexRoute: DocumentUpload2InvoiceIndexRoute,
+}
+
+const DocumentUpload2RouteWithChildren = DocumentUpload2Route._addFileChildren(
+  DocumentUpload2RouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiChatRoute: AiChatRoute,
@@ -660,6 +699,7 @@ const rootRouteChildren: RootRouteChildren = {
   DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DocumentUploadContractRoute: DocumentUploadContractRoute,
   DocumentUploadInvoiceRoute: DocumentUploadInvoiceRoute,
+  DocumentUpload2Route: DocumentUpload2RouteWithChildren,
   ApiDocumentUploadContractRoute: ApiDocumentUploadContractRoute,
   ApiDocumentUploadInvoiceRoute: ApiDocumentUploadInvoiceRoute,
   ApiInvoiceDoc_idRoute: ApiInvoiceDoc_idRoute,

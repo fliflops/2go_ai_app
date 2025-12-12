@@ -1,7 +1,7 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {json} from '@tanstack/react-start';
 import { writeFile } from 'node:fs/promises';
-import {postDocument} from '@/services/paperless.service';
+import { getDocument, pollUntilCondition, postDocument} from '@/services/paperless.service';
 import path from 'path';
 
 export const Route = createFileRoute('/api/document-upload/invoice')({
@@ -23,11 +23,18 @@ export const Route = createFileRoute('/api/document-upload/invoice')({
                             
                     await writeFile(pathFile, buffer);
     
-                    const postedDocument = await postDocument(pathFile);
-        
-                    return json({ 
-                        success: true, 
-                        documentId: postedDocument
+                    const uploadId = await postDocument(pathFile,{
+                        title: `INVOICE_${filename}`
+                    });
+
+                    const uploadInfo = await pollUntilCondition({uploadId, maxAttempts: 50})
+                    const data = await getDocument(uploadInfo[0].related_document)
+
+                    return json({
+                        success:true,
+                        status: uploadInfo[0]?.status,
+                        result: uploadInfo[0]?.result,
+                        data
                     })
 
                 }

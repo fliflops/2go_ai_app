@@ -23,6 +23,7 @@ export const postDocument = async(filePath: string, options?: {
 
         const form = new FormData();
         form.append('document', fs.createReadStream(filePath));
+        if(options?.title) form.append('title', options?.title)
 
         const response = await api.post('/api/documents/post_document/',form,{
             headers:{
@@ -43,8 +44,24 @@ export const getDocument = async(id: string ) => {
     try{
         const response = await api.get(`/api/documents/${id}/`);
         
+        return response.data;
+    }
+    catch(error: any){
+        console.error(error.response?.data)
+        throw new Error(`Upload failed: ${error.response?.data?.message || error.message}`);
+    }
+}
+
+export const getUploadTask = async(uploadId: string) => {
+    try{
+         const response = await api.get(`/api/tasks/`,{
+            params: {
+                task_id: uploadId
+            }
+         });
         
         return response.data;
+
     }
     catch(error: any){
         console.error(error.response?.data)
@@ -92,4 +109,35 @@ export const getDocuments = async(filters:{
         console.error(error.response?.data)
         throw new Error(`Upload failed: ${error.response?.data?.message || error.message}`);
     }
+}
+
+export async function pollUntilCondition({
+    uploadId,
+    intervalMs = 3000, // Default is 3 seconds, but we will override it below
+    maxAttempts = 20
+}: {
+    uploadId: string,
+    intervalMs?: number, 
+    maxAttempts?:number
+})
+     {
+  let attempt = 0;
+
+  while (attempt < maxAttempts) {
+    attempt++;
+    console.log(`Polling attempt: ${attempt} (Next poll in ${intervalMs / 1000} seconds)`);
+
+    try {
+        const data = await getUploadTask(uploadId)
+        if(data.find((item:any) => !['PENDING','STARTED'].includes(item.status))) return data
+      
+        await new Promise(resolve => setTimeout(resolve, intervalMs));
+
+    } catch (error) {
+      console.error('Polling fetch failed:', error);
+      await new Promise(resolve => setTimeout(resolve, intervalMs)); 
+    }
+  }
+
+  throw new Error(`Polling failed after ${maxAttempts} attempts.`);
 }

@@ -25,11 +25,11 @@ const data = [
         group_name: 'Document Upload',
         menu_items: [
             {
-                name: 'Contract Upload',
+                name: 'Invoice Upload',
                 path: '/document-upload/invoice'
             },
             {
-                name:'Invoice Upload',
+                name:'Contract Upload',
                 path:'/document-upload/contract'
             }
         ]

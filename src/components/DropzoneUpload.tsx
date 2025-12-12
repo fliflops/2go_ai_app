@@ -8,6 +8,7 @@ import { cn } from '@/lib/utils'
 interface DropzoneUploadProps {
   apiEndpoint: string
   onSuccess?: (data: any) => void
+  onReset?: (data?: any) => void
   onError?: (error: Error) => void
   maxSize?: number // in bytes
   maxFiles?: number
@@ -18,6 +19,7 @@ interface DropzoneUploadProps {
 export function DropzoneUpload({
   apiEndpoint,
   onSuccess,
+  onReset,
   onError,
   maxSize = 10 * 1024 * 1024, // 10MB default
   maxFiles = 1,
@@ -51,12 +53,14 @@ export function DropzoneUpload({
     },
     onError: (error: Error) => {
       onError?.(error)
+      onReset?.()
     }
   })
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     setFiles(acceptedFiles)
     uploadMutation.reset()
+    onReset?.()
   }, [])
 
   const { getRootProps, getInputProps, isDragActive, isDragReject, fileRejections } = useDropzone({
@@ -73,10 +77,12 @@ export function DropzoneUpload({
         uploadMutation.mutate(file)
       })
     }
+    onReset?.()
   }
 
   const handleRemove = (index: number) => {
     setFiles(files.filter((_, i) => i !== index))
+    onReset?.()
     uploadMutation.reset()
   }
 
