@@ -25,7 +25,6 @@ import { Route as AiChatRouteImport } from './routes/ai/chat'
 import { Route as ExampleGuitarsIndexRouteImport } from './routes/example.guitars/index'
 import { Route as DocumentUpload2InvoiceIndexRouteImport } from './routes/document-upload2/_invoice/index'
 import { Route as ApiInvoiceIndexRouteImport } from './routes/api/invoice/index'
-import { Route as ApiAiIndexRouteImport } from './routes/api/ai/index'
 import { Route as ExampleGuitarsGuitarIdRouteImport } from './routes/example.guitars/$guitarId'
 import { Route as DocumentUpload2InvoiceDoc_idRouteImport } from './routes/document-upload2/_invoice/$doc_id'
 import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
@@ -38,6 +37,7 @@ import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
 import { Route as ApiInvoiceDoc_idRouteImport } from './routes/api/invoice/$doc_id'
 import { Route as ApiDocumentUploadInvoiceRouteImport } from './routes/api/document-upload/invoice'
 import { Route as ApiDocumentUploadContractRouteImport } from './routes/api/document-upload/contract'
+import { Route as ApiAiInvoiceRouteImport } from './routes/api/ai/invoice'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
@@ -120,11 +120,6 @@ const ApiInvoiceIndexRoute = ApiInvoiceIndexRouteImport.update({
   path: '/api/invoice/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAiIndexRoute = ApiAiIndexRouteImport.update({
-  id: '/api/ai/',
-  path: '/api/ai/',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const ExampleGuitarsGuitarIdRoute = ExampleGuitarsGuitarIdRouteImport.update({
   id: '/example/guitars/$guitarId',
   path: '/example/guitars/$guitarId',
@@ -188,6 +183,11 @@ const ApiDocumentUploadContractRoute =
     path: '/api/document-upload/contract',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAiInvoiceRoute = ApiAiInvoiceRouteImport.update({
+  id: '/api/ai/invoice',
+  path: '/api/ai/invoice',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
   id: '/demo/start/ssr/',
   path: '/demo/start/ssr/',
@@ -221,6 +221,7 @@ export interface FileRoutesByFullPath {
   '/document-upload2': typeof DocumentUpload2IndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
@@ -233,7 +234,6 @@ export interface FileRoutesByFullPath {
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
   '/document-upload2/$doc_id': typeof DocumentUpload2InvoiceDoc_idRoute
   '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/api/ai': typeof ApiAiIndexRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
   '/document-upload2/': typeof DocumentUpload2InvoiceIndexRoute
   '/example/guitars': typeof ExampleGuitarsIndexRoute
@@ -254,6 +254,7 @@ export interface FileRoutesByTo {
   '/document-upload2': typeof DocumentUpload2InvoiceIndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
@@ -266,7 +267,6 @@ export interface FileRoutesByTo {
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
   '/document-upload2/$doc_id': typeof DocumentUpload2InvoiceDoc_idRoute
   '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/api/ai': typeof ApiAiIndexRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
   '/example/guitars': typeof ExampleGuitarsIndexRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
@@ -288,6 +288,7 @@ export interface FileRoutesById {
   '/document-upload2/_index': typeof DocumentUpload2IndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
@@ -300,7 +301,6 @@ export interface FileRoutesById {
   '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
   '/document-upload2/_invoice/$doc_id': typeof DocumentUpload2InvoiceDoc_idRoute
   '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/api/ai/': typeof ApiAiIndexRoute
   '/api/invoice/': typeof ApiInvoiceIndexRoute
   '/document-upload2/_invoice/': typeof DocumentUpload2InvoiceIndexRoute
   '/example/guitars/': typeof ExampleGuitarsIndexRoute
@@ -323,6 +323,7 @@ export interface FileRouteTypes {
     | '/document-upload2'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
+    | '/api/ai/invoice'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
     | '/api/invoice/$doc_id'
@@ -335,7 +336,6 @@ export interface FileRouteTypes {
     | '/demo/start/server-funcs'
     | '/document-upload2/$doc_id'
     | '/example/guitars/$guitarId'
-    | '/api/ai'
     | '/api/invoice'
     | '/document-upload2/'
     | '/example/guitars'
@@ -356,6 +356,7 @@ export interface FileRouteTypes {
     | '/document-upload2'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
+    | '/api/ai/invoice'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
     | '/api/invoice/$doc_id'
@@ -368,7 +369,6 @@ export interface FileRouteTypes {
     | '/demo/start/server-funcs'
     | '/document-upload2/$doc_id'
     | '/example/guitars/$guitarId'
-    | '/api/ai'
     | '/api/invoice'
     | '/example/guitars'
     | '/demo/start/ssr/data-only'
@@ -389,6 +389,7 @@ export interface FileRouteTypes {
     | '/document-upload2/_index'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
+    | '/api/ai/invoice'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
     | '/api/invoice/$doc_id'
@@ -401,7 +402,6 @@ export interface FileRouteTypes {
     | '/demo/start/server-funcs'
     | '/document-upload2/_invoice/$doc_id'
     | '/example/guitars/$guitarId'
-    | '/api/ai/'
     | '/api/invoice/'
     | '/document-upload2/_invoice/'
     | '/example/guitars/'
@@ -421,6 +421,7 @@ export interface RootRouteChildren {
   DocumentUploadContractRoute: typeof DocumentUploadContractRoute
   DocumentUploadInvoiceRoute: typeof DocumentUploadInvoiceRoute
   DocumentUpload2Route: typeof DocumentUpload2RouteWithChildren
+  ApiAiInvoiceRoute: typeof ApiAiInvoiceRoute
   ApiDocumentUploadContractRoute: typeof ApiDocumentUploadContractRoute
   ApiDocumentUploadInvoiceRoute: typeof ApiDocumentUploadInvoiceRoute
   ApiInvoiceDoc_idRoute: typeof ApiInvoiceDoc_idRoute
@@ -432,7 +433,6 @@ export interface RootRouteChildren {
   DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
   DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
   ExampleGuitarsGuitarIdRoute: typeof ExampleGuitarsGuitarIdRoute
-  ApiAiIndexRoute: typeof ApiAiIndexRoute
   ApiInvoiceIndexRoute: typeof ApiInvoiceIndexRoute
   ExampleGuitarsIndexRoute: typeof ExampleGuitarsIndexRoute
   DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
@@ -548,13 +548,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiInvoiceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/ai/': {
-      id: '/api/ai/'
-      path: '/api/ai'
-      fullPath: '/api/ai'
-      preLoaderRoute: typeof ApiAiIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/example/guitars/$guitarId': {
       id: '/example/guitars/$guitarId'
       path: '/example/guitars/$guitarId'
@@ -639,6 +632,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDocumentUploadContractRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai/invoice': {
+      id: '/api/ai/invoice'
+      path: '/api/ai/invoice'
+      fullPath: '/api/ai/invoice'
+      preLoaderRoute: typeof ApiAiInvoiceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/demo/start/ssr/': {
       id: '/demo/start/ssr/'
       path: '/demo/start/ssr'
@@ -700,6 +700,7 @@ const rootRouteChildren: RootRouteChildren = {
   DocumentUploadContractRoute: DocumentUploadContractRoute,
   DocumentUploadInvoiceRoute: DocumentUploadInvoiceRoute,
   DocumentUpload2Route: DocumentUpload2RouteWithChildren,
+  ApiAiInvoiceRoute: ApiAiInvoiceRoute,
   ApiDocumentUploadContractRoute: ApiDocumentUploadContractRoute,
   ApiDocumentUploadInvoiceRoute: ApiDocumentUploadInvoiceRoute,
   ApiInvoiceDoc_idRoute: ApiInvoiceDoc_idRoute,
@@ -711,7 +712,6 @@ const rootRouteChildren: RootRouteChildren = {
   DemoStartApiRequestRoute: DemoStartApiRequestRoute,
   DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
   ExampleGuitarsGuitarIdRoute: ExampleGuitarsGuitarIdRoute,
-  ApiAiIndexRoute: ApiAiIndexRoute,
   ApiInvoiceIndexRoute: ApiInvoiceIndexRoute,
   ExampleGuitarsIndexRoute: ExampleGuitarsIndexRoute,
   DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,

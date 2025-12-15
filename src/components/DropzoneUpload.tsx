@@ -40,7 +40,8 @@ export function DropzoneUpload({
       })
 
       if (!response.ok) {
-        throw new Error(`Upload failed: ${response.statusText}`)
+        const error = await response.json();
+        throw new Error(`Upload failed: ${error.message}`)
       }
 
       return response.json()

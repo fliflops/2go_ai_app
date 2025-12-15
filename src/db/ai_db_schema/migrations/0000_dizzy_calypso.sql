@@ -1,0 +1,21 @@
+CREATE TABLE "ai_db_schema"."invoice_tbl" (
+	"id" char(36) PRIMARY KEY NOT NULL,
+	"ocr_id" integer,
+	"invoice_number" varchar(255),
+	"invoice_date" date,
+	"vendor_name" varchar(500),
+	"vendor_tin" varchar(100),
+	"customer_name" varchar(500),
+	"customer_tin" varchar(100),
+	"total_amount" varchar(50),
+	"currency" varchar(10),
+	"vat_amount" varchar(50),
+	"signature_present" boolean,
+	"bir_atp" boolean,
+	"attachment_validation_status" varchar(50) DEFAULT 'pending',
+	"bir_validation_status" varchar(50) DEFAULT 'pending',
+	"amount_validation_status" varchar(50) DEFAULT 'pending',
+	"created_at" timestamp DEFAULT now(),
+	"updated_at" timestamp DEFAULT now(),
+	CONSTRAINT "invoice_tbl_ocr_id_unique" UNIQUE("ocr_id")
+);
