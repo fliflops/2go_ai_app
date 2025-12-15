@@ -1,50 +1,11 @@
-import { JsonViewer } from '@/components/JsonViewer';
-import ScrollContent from '@/components/ScrollContent';
-import { Button } from '@/components/ui/button';
-import { useMutation, useQuery } from '@tanstack/react-query';
-import { createFileRoute, useParams } from '@tanstack/react-router'
-import React from 'react'
+import OpenAI from 'openai';
 
-
-export const Route = createFileRoute('/document-upload2/_invoice/$doc_id')({
-  component: RouteComponent,
+export const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY    
 })
 
-const validateInvoice = async (message:string) => {
-	const response = await fetch(`/api/ai`,{
-		method: 'POST',
-		body: message
-	})
-
-	return response.json();
-}
-
-const getInvoice = async(doc_id:string) => {
-const response = await fetch(`/api/invoice/${doc_id}`)
-
-    return response.json();
-}
-
-
-function RouteComponent() {
-	const {doc_id} = useParams({
-		from: '/document-upload/invoice/$doc_id'
-	})
-
-	const {data:document, isLoading} = useQuery({
-		queryKey: ['document',doc_id],
-		queryFn: async() => await getInvoice(doc_id),
-	}) 
-
-	const [jsonData, setJsonData] = React.useState<{} | null>(null)
-
-	const {mutate, isPending} = useMutation({
-		mutationFn: async(invoice: string) => {
-
-			const prompt = `
-			# Philippine Invoice Data Extraction Specialist
-			 
-			Extract structured data from Philippine sales invoices (goods/products or services) into JSON format following BIR requirements.
+export const invoiceExtractionPrompt = (invoice: string) => {
+    return ` Extract structured data from Philippine sales invoices (goods/products or services) into JSON format following BIR requirements.
 			 
 			## Context
 
@@ -229,58 +190,17 @@ function RouteComponent() {
 			}
 			 
 			## Invoice Document
+
 			${invoice}
 			`
-
-			const res = await validateInvoice(prompt);
-			if (!res.ok) {
-        		throw new Error(`Upload failed: ${res.statusText}`)
-      		}
-		},
-		onSuccess:(data) => {
-			console.log(data)
-			
-		},
-		onError: (error: Error) => {
-			console.log(error)
-    	}
-	})
-
-	if(isLoading) return <>
-		Loading...
-	</>
-
-	return (
-		<div className='container mx-auto py-10'>
-			<div className='flex flex-col gap-2'>
-				<div>
-					<h1 className="text-3xl font-bold tracking-tight">Document Details</h1>
-					<p className="text-slate-600 mt-2">
-						{document.data.title}
-					</p>
-				</div>
-				<div className='flex gap-1 justify-end'>
-					<Button disabled={isPending} onClick={() => mutate(document.data.content)}>Validate Data</Button>
-				</div>
-				<div className='flex flex-col px-5 gap-5'>
-					<div className='flex flex-col gap-1'>
-						<p className='text-slate-600'>Validated Content</p>
-						<JsonViewer isLoading={isPending} maxHeight='200px' data={!jsonData ? {
-							message: 'No Data'
-						} : jsonData}/>
-					</div>
-					
-					<div className='flex flex-col gap-1'>
-						<p className='text-slate-600'>OCR Content</p>
-						<ScrollContent maxHeight='200px' showCopyButton copyText={document.data.content}>
-							<div className='space-y-4'>
-								<p className="text-sm text-slate-700">{document.data.content}</p>
-							</div>
-						</ScrollContent>
-					</div>
-				</div>
-			</div>
-		</div>
-	)
 }
- 
+
+export const chatResponse = async({instructions, input}: {instructions:string, input:string} ) => {
+    const response = await openai.responses.create({
+        model: 'gpt-4o-mini',
+        instructions,
+        input,  
+    })
+
+    return response
+}

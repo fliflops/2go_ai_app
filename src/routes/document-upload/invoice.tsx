@@ -2,6 +2,7 @@ import React from 'react';
 import { DropzoneUpload } from '@/components/DropzoneUpload'
 import { createFileRoute } from '@tanstack/react-router'
 
+
 export const Route = createFileRoute('/document-upload/invoice')({
   component: RouteComponent,
 })
@@ -16,7 +17,7 @@ function RouteComponent() {
               Upload your Invoices here
             </p>
           
-            <div className='flex flex-col gap-2'>
+            <div className='flex flex-col gap-2 mt-10'>
               <div className='w-full max-w-2xl mx-auto space-y-4 border p-5 rounded-md'>
                   <div className='flex flex-col gap-2'>
                     <p className="text-slate-600">

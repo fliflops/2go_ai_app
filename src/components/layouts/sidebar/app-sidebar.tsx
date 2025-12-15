@@ -33,6 +33,15 @@ const data = [
                 path:'/document-upload/contract'
             }
         ]
+    },
+    {
+        group_name: 'Documents',
+        menu_items: [
+            {
+                name: 'Invoices',
+                path: '/documents/invoices'
+            }
+        ]
     }
 ] as {
     group_name: string;

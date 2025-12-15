@@ -4,10 +4,12 @@ import { defineConfig } from 'drizzle-kit'
 config()
 
 export default defineConfig({
-  out: './drizzle',
-  schema: './src/db/schema.ts',
   dialect: 'postgresql',
-  dbCredentials: {
-    url: process.env.DATABASE_URL,
-  },
+  schema: './src/db/ai_db_schema/schema.ts',
+  out: './src/db/ai_db_schema/migrations',
+  dbCredentials:{
+    url: process.env.DATABASE_URL as string,
+    ssl: false
+  }
 })
+

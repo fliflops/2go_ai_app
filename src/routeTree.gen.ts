@@ -8,33 +8,13 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
-
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DocumentUpload2IndexRouteImport } from './routes/document-upload2/_index'
-import { Route as DocumentUpload2InvoiceRouteImport } from './routes/document-upload2/invoice'
-import { Route as DocumentUpload2ContractRouteImport } from './routes/document-upload2/contract'
+import { Route as DocumentsInvoicesRouteImport } from './routes/documents/invoices'
 import { Route as DocumentUploadInvoiceRouteImport } from './routes/document-upload/invoice'
 import { Route as DocumentUploadContractRouteImport } from './routes/document-upload/contract'
-import { Route as DemoTanstackQueryRouteImport } from './routes/demo/tanstack-query'
-import { Route as DemoTanchatRouteImport } from './routes/demo/tanchat'
-import { Route as DemoStoreRouteImport } from './routes/demo/store'
-import { Route as DemoDrizzleRouteImport } from './routes/demo/drizzle'
 import { Route as AiChatRouteImport } from './routes/ai/chat'
-import { Route as ExampleGuitarsIndexRouteImport } from './routes/example.guitars/index'
-import { Route as DocumentUpload2InvoiceIndexRouteImport } from './routes/document-upload2/_invoice/index'
 import { Route as ApiInvoiceIndexRouteImport } from './routes/api/invoice/index'
-import { Route as ApiAiIndexRouteImport } from './routes/api/ai/index'
-import { Route as ExampleGuitarsGuitarIdRouteImport } from './routes/example.guitars/$guitarId'
-import { Route as DocumentUpload2InvoiceDoc_idRouteImport } from './routes/document-upload2/_invoice/$doc_id'
-import { Route as DemoStartServerFuncsRouteImport } from './routes/demo/start.server-funcs'
-import { Route as DemoStartApiRequestRouteImport } from './routes/demo/start.api-request'
-import { Route as DemoFormSimpleRouteImport } from './routes/demo/form.simple'
-import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
-import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
-import { Route as DemoApiTanchatRouteImport } from './routes/demo/api.tanchat'
-import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
 import { Route as ApiValidationTestRouteImport } from './routes/api/validation/test'
 import { Route as ApiValidationConfigsRouteImport } from './routes/api/validation/configs'
 import { Route as ApiInvoiceDoc_idRouteImport } from './routes/api/invoice/$doc_id'
@@ -45,38 +25,19 @@ import { Route as ApiDocumentBatchBirComplianceRouteImport } from './routes/api/
 import { Route as ApiDocumentUploadInvoiceRouteImport } from './routes/api/document-upload/invoice'
 import { Route as ApiDocumentUploadContractRouteImport } from './routes/api/document-upload/contract'
 import { Route as ApiBirComplianceTestRouteImport } from './routes/api/bir-compliance/test'
-import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
-import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
-import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
-import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
+import { Route as ApiAiInvoiceRouteImport } from './routes/api/ai/invoice'
 import { Route as ApiDocumentDoc_idValidateRouteImport } from './routes/api/document/$doc_id/validate'
 import { Route as ApiDocumentDoc_idBirComplianceRouteImport } from './routes/api/document/$doc_id/bir-compliance'
 
-const DocumentUpload2RouteImport = createFileRoute('/document-upload2')()
-
-const DocumentUpload2Route = DocumentUpload2RouteImport.update({
-  id: '/document-upload2',
-  path: '/document-upload2',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DocumentUpload2IndexRoute = DocumentUpload2IndexRouteImport.update({
-  id: '/_index',
-  getParentRoute: () => DocumentUpload2Route,
-} as any)
-const DocumentUpload2InvoiceRoute = DocumentUpload2InvoiceRouteImport.update({
-  id: '/invoice',
-  path: '/invoice',
-  getParentRoute: () => DocumentUpload2Route,
-} as any)
-const DocumentUpload2ContractRoute = DocumentUpload2ContractRouteImport.update({
-  id: '/contract',
-  path: '/contract',
-  getParentRoute: () => DocumentUpload2Route,
+const DocumentsInvoicesRoute = DocumentsInvoicesRouteImport.update({
+  id: '/documents/invoices',
+  path: '/documents/invoices',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const DocumentUploadInvoiceRoute = DocumentUploadInvoiceRouteImport.update({
   id: '/document-upload/invoice',
@@ -88,96 +49,14 @@ const DocumentUploadContractRoute = DocumentUploadContractRouteImport.update({
   path: '/document-upload/contract',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoTanstackQueryRoute = DemoTanstackQueryRouteImport.update({
-  id: '/demo/tanstack-query',
-  path: '/demo/tanstack-query',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoTanchatRoute = DemoTanchatRouteImport.update({
-  id: '/demo/tanchat',
-  path: '/demo/tanchat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStoreRoute = DemoStoreRouteImport.update({
-  id: '/demo/store',
-  path: '/demo/store',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoDrizzleRoute = DemoDrizzleRouteImport.update({
-  id: '/demo/drizzle',
-  path: '/demo/drizzle',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AiChatRoute = AiChatRouteImport.update({
   id: '/ai/chat',
   path: '/ai/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ExampleGuitarsIndexRoute = ExampleGuitarsIndexRouteImport.update({
-  id: '/example/guitars/',
-  path: '/example/guitars/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DocumentUpload2InvoiceIndexRoute =
-  DocumentUpload2InvoiceIndexRouteImport.update({
-    id: '/_invoice/',
-    path: '/',
-    getParentRoute: () => DocumentUpload2Route,
-  } as any)
 const ApiInvoiceIndexRoute = ApiInvoiceIndexRouteImport.update({
   id: '/api/invoice/',
   path: '/api/invoice/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ApiAiIndexRoute = ApiAiIndexRouteImport.update({
-  id: '/api/ai/',
-  path: '/api/ai/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ExampleGuitarsGuitarIdRoute = ExampleGuitarsGuitarIdRouteImport.update({
-  id: '/example/guitars/$guitarId',
-  path: '/example/guitars/$guitarId',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DocumentUpload2InvoiceDoc_idRoute =
-  DocumentUpload2InvoiceDoc_idRouteImport.update({
-    id: '/_invoice/$doc_id',
-    path: '/$doc_id',
-    getParentRoute: () => DocumentUpload2Route,
-  } as any)
-const DemoStartServerFuncsRoute = DemoStartServerFuncsRouteImport.update({
-  id: '/demo/start/server-funcs',
-  path: '/demo/start/server-funcs',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartApiRequestRoute = DemoStartApiRequestRouteImport.update({
-  id: '/demo/start/api-request',
-  path: '/demo/start/api-request',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoFormSimpleRoute = DemoFormSimpleRouteImport.update({
-  id: '/demo/form/simple',
-  path: '/demo/form/simple',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoFormAddressRoute = DemoFormAddressRouteImport.update({
-  id: '/demo/form/address',
-  path: '/demo/form/address',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoApiTqTodosRoute = DemoApiTqTodosRouteImport.update({
-  id: '/demo/api/tq-todos',
-  path: '/demo/api/tq-todos',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoApiTanchatRoute = DemoApiTanchatRouteImport.update({
-  id: '/demo/api/tanchat',
-  path: '/demo/api/tanchat',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
-  id: '/demo/api/names',
-  path: '/demo/api/names',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiValidationTestRoute = ApiValidationTestRouteImport.update({
@@ -235,24 +114,9 @@ const ApiBirComplianceTestRoute = ApiBirComplianceTestRouteImport.update({
   path: '/api/bir-compliance/test',
   getParentRoute: () => rootRouteImport,
 } as any)
-const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
-  id: '/demo/start/ssr/',
-  path: '/demo/start/ssr/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrSpaModeRoute = DemoStartSsrSpaModeRouteImport.update({
-  id: '/demo/start/ssr/spa-mode',
-  path: '/demo/start/ssr/spa-mode',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrFullSsrRoute = DemoStartSsrFullSsrRouteImport.update({
-  id: '/demo/start/ssr/full-ssr',
-  path: '/demo/start/ssr/full-ssr',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
-  id: '/demo/start/ssr/data-only',
-  path: '/demo/start/ssr/data-only',
+const ApiAiInvoiceRoute = ApiAiInvoiceRouteImport.update({
+  id: '/api/ai/invoice',
+  path: '/api/ai/invoice',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiDocumentDoc_idValidateRoute =
@@ -271,15 +135,10 @@ const ApiDocumentDoc_idBirComplianceRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/ai/chat': typeof AiChatRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
-  '/demo/store': typeof DemoStoreRoute
-  '/demo/tanchat': typeof DemoTanchatRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
-  '/document-upload2': typeof DocumentUpload2IndexRoute
-  '/document-upload2/contract': typeof DocumentUpload2ContractRoute
-  '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/documents/invoices': typeof DocumentsInvoicesRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
@@ -290,38 +149,17 @@ export interface FileRoutesByFullPath {
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
   '/api/validation/configs': typeof ApiValidationConfigsRoute
   '/api/validation/test': typeof ApiValidationTestRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tanchat': typeof DemoApiTanchatRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/document-upload2/$doc_id': typeof DocumentUpload2InvoiceDoc_idRoute
-  '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/api/ai': typeof ApiAiIndexRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
-  '/document-upload2/': typeof DocumentUpload2InvoiceIndexRoute
-  '/example/guitars': typeof ExampleGuitarsIndexRoute
   '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
   '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/ai/chat': typeof AiChatRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
-  '/demo/store': typeof DemoStoreRoute
-  '/demo/tanchat': typeof DemoTanchatRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
-  '/document-upload2': typeof DocumentUpload2InvoiceIndexRoute
-  '/document-upload2/contract': typeof DocumentUpload2ContractRoute
-  '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/documents/invoices': typeof DocumentsInvoicesRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
@@ -332,39 +170,18 @@ export interface FileRoutesByTo {
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
   '/api/validation/configs': typeof ApiValidationConfigsRoute
   '/api/validation/test': typeof ApiValidationTestRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tanchat': typeof DemoApiTanchatRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/document-upload2/$doc_id': typeof DocumentUpload2InvoiceDoc_idRoute
-  '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/api/ai': typeof ApiAiIndexRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
-  '/example/guitars': typeof ExampleGuitarsIndexRoute
   '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
   '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr': typeof DemoStartSsrIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/ai/chat': typeof AiChatRoute
-  '/demo/drizzle': typeof DemoDrizzleRoute
-  '/demo/store': typeof DemoStoreRoute
-  '/demo/tanchat': typeof DemoTanchatRoute
-  '/demo/tanstack-query': typeof DemoTanstackQueryRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
-  '/document-upload2': typeof DocumentUpload2RouteWithChildren
-  '/document-upload2/_index': typeof DocumentUpload2IndexRoute
-  '/document-upload2/contract': typeof DocumentUpload2ContractRoute
-  '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/documents/invoices': typeof DocumentsInvoicesRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
@@ -375,40 +192,19 @@ export interface FileRoutesById {
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
   '/api/validation/configs': typeof ApiValidationConfigsRoute
   '/api/validation/test': typeof ApiValidationTestRoute
-  '/demo/api/names': typeof DemoApiNamesRoute
-  '/demo/api/tanchat': typeof DemoApiTanchatRoute
-  '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
-  '/demo/form/address': typeof DemoFormAddressRoute
-  '/demo/form/simple': typeof DemoFormSimpleRoute
-  '/demo/start/api-request': typeof DemoStartApiRequestRoute
-  '/demo/start/server-funcs': typeof DemoStartServerFuncsRoute
-  '/document-upload2/_invoice/$doc_id': typeof DocumentUpload2InvoiceDoc_idRoute
-  '/example/guitars/$guitarId': typeof ExampleGuitarsGuitarIdRoute
-  '/api/ai/': typeof ApiAiIndexRoute
   '/api/invoice/': typeof ApiInvoiceIndexRoute
-  '/document-upload2/_invoice/': typeof DocumentUpload2InvoiceIndexRoute
-  '/example/guitars/': typeof ExampleGuitarsIndexRoute
   '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
   '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
-  '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
-  '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
-  '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
-  '/demo/start/ssr/': typeof DemoStartSsrIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
     | '/ai/chat'
-    | '/demo/drizzle'
-    | '/demo/store'
-    | '/demo/tanchat'
-    | '/demo/tanstack-query'
     | '/document-upload/contract'
     | '/document-upload/invoice'
-    | '/document-upload2'
-    | '/document-upload2/contract'
-    | '/document-upload2/invoice'
+    | '/documents/invoices'
+    | '/api/ai/invoice'
     | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
@@ -419,38 +215,17 @@ export interface FileRouteTypes {
     | '/api/invoice/$doc_id'
     | '/api/validation/configs'
     | '/api/validation/test'
-    | '/demo/api/names'
-    | '/demo/api/tanchat'
-    | '/demo/api/tq-todos'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/document-upload2/$doc_id'
-    | '/example/guitars/$guitarId'
-    | '/api/ai'
     | '/api/invoice'
-    | '/document-upload2/'
-    | '/example/guitars'
     | '/api/document/$doc_id/bir-compliance'
     | '/api/document/$doc_id/validate'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/ai/chat'
-    | '/demo/drizzle'
-    | '/demo/store'
-    | '/demo/tanchat'
-    | '/demo/tanstack-query'
     | '/document-upload/contract'
     | '/document-upload/invoice'
-    | '/document-upload2'
-    | '/document-upload2/contract'
-    | '/document-upload2/invoice'
+    | '/documents/invoices'
+    | '/api/ai/invoice'
     | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
@@ -461,38 +236,17 @@ export interface FileRouteTypes {
     | '/api/invoice/$doc_id'
     | '/api/validation/configs'
     | '/api/validation/test'
-    | '/demo/api/names'
-    | '/demo/api/tanchat'
-    | '/demo/api/tq-todos'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/document-upload2/$doc_id'
-    | '/example/guitars/$guitarId'
-    | '/api/ai'
     | '/api/invoice'
-    | '/example/guitars'
     | '/api/document/$doc_id/bir-compliance'
     | '/api/document/$doc_id/validate'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr'
   id:
     | '__root__'
     | '/'
     | '/ai/chat'
-    | '/demo/drizzle'
-    | '/demo/store'
-    | '/demo/tanchat'
-    | '/demo/tanstack-query'
     | '/document-upload/contract'
     | '/document-upload/invoice'
-    | '/document-upload2'
-    | '/document-upload2/_index'
-    | '/document-upload2/contract'
-    | '/document-upload2/invoice'
+    | '/documents/invoices'
+    | '/api/ai/invoice'
     | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
@@ -503,37 +257,18 @@ export interface FileRouteTypes {
     | '/api/invoice/$doc_id'
     | '/api/validation/configs'
     | '/api/validation/test'
-    | '/demo/api/names'
-    | '/demo/api/tanchat'
-    | '/demo/api/tq-todos'
-    | '/demo/form/address'
-    | '/demo/form/simple'
-    | '/demo/start/api-request'
-    | '/demo/start/server-funcs'
-    | '/document-upload2/_invoice/$doc_id'
-    | '/example/guitars/$guitarId'
-    | '/api/ai/'
     | '/api/invoice/'
-    | '/document-upload2/_invoice/'
-    | '/example/guitars/'
     | '/api/document/$doc_id/bir-compliance'
     | '/api/document/$doc_id/validate'
-    | '/demo/start/ssr/data-only'
-    | '/demo/start/ssr/full-ssr'
-    | '/demo/start/ssr/spa-mode'
-    | '/demo/start/ssr/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AiChatRoute: typeof AiChatRoute
-  DemoDrizzleRoute: typeof DemoDrizzleRoute
-  DemoStoreRoute: typeof DemoStoreRoute
-  DemoTanchatRoute: typeof DemoTanchatRoute
-  DemoTanstackQueryRoute: typeof DemoTanstackQueryRoute
   DocumentUploadContractRoute: typeof DocumentUploadContractRoute
   DocumentUploadInvoiceRoute: typeof DocumentUploadInvoiceRoute
-  DocumentUpload2Route: typeof DocumentUpload2RouteWithChildren
+  DocumentsInvoicesRoute: typeof DocumentsInvoicesRoute
+  ApiAiInvoiceRoute: typeof ApiAiInvoiceRoute
   ApiBirComplianceTestRoute: typeof ApiBirComplianceTestRoute
   ApiDocumentUploadContractRoute: typeof ApiDocumentUploadContractRoute
   ApiDocumentUploadInvoiceRoute: typeof ApiDocumentUploadInvoiceRoute
@@ -544,34 +279,13 @@ export interface RootRouteChildren {
   ApiInvoiceDoc_idRoute: typeof ApiInvoiceDoc_idRoute
   ApiValidationConfigsRoute: typeof ApiValidationConfigsRoute
   ApiValidationTestRoute: typeof ApiValidationTestRoute
-  DemoApiNamesRoute: typeof DemoApiNamesRoute
-  DemoApiTanchatRoute: typeof DemoApiTanchatRoute
-  DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
-  DemoFormAddressRoute: typeof DemoFormAddressRoute
-  DemoFormSimpleRoute: typeof DemoFormSimpleRoute
-  DemoStartApiRequestRoute: typeof DemoStartApiRequestRoute
-  DemoStartServerFuncsRoute: typeof DemoStartServerFuncsRoute
-  ExampleGuitarsGuitarIdRoute: typeof ExampleGuitarsGuitarIdRoute
-  ApiAiIndexRoute: typeof ApiAiIndexRoute
   ApiInvoiceIndexRoute: typeof ApiInvoiceIndexRoute
-  ExampleGuitarsIndexRoute: typeof ExampleGuitarsIndexRoute
   ApiDocumentDoc_idBirComplianceRoute: typeof ApiDocumentDoc_idBirComplianceRoute
   ApiDocumentDoc_idValidateRoute: typeof ApiDocumentDoc_idValidateRoute
-  DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
-  DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
-  DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
-  DemoStartSsrIndexRoute: typeof DemoStartSsrIndexRoute
 }
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/document-upload2': {
-      id: '/document-upload2'
-      path: '/document-upload2'
-      fullPath: '/document-upload2'
-      preLoaderRoute: typeof DocumentUpload2RouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/': {
       id: '/'
       path: '/'
@@ -579,26 +293,12 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/document-upload2/_index': {
-      id: '/document-upload2/_index'
-      path: '/document-upload2'
-      fullPath: '/document-upload2'
-      preLoaderRoute: typeof DocumentUpload2IndexRouteImport
-      parentRoute: typeof DocumentUpload2Route
-    }
-    '/document-upload2/invoice': {
-      id: '/document-upload2/invoice'
-      path: '/invoice'
-      fullPath: '/document-upload2/invoice'
-      preLoaderRoute: typeof DocumentUpload2InvoiceRouteImport
-      parentRoute: typeof DocumentUpload2Route
-    }
-    '/document-upload2/contract': {
-      id: '/document-upload2/contract'
-      path: '/contract'
-      fullPath: '/document-upload2/contract'
-      preLoaderRoute: typeof DocumentUpload2ContractRouteImport
-      parentRoute: typeof DocumentUpload2Route
+    '/documents/invoices': {
+      id: '/documents/invoices'
+      path: '/documents/invoices'
+      fullPath: '/documents/invoices'
+      preLoaderRoute: typeof DocumentsInvoicesRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/document-upload/invoice': {
       id: '/document-upload/invoice'
@@ -614,34 +314,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DocumentUploadContractRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/tanstack-query': {
-      id: '/demo/tanstack-query'
-      path: '/demo/tanstack-query'
-      fullPath: '/demo/tanstack-query'
-      preLoaderRoute: typeof DemoTanstackQueryRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/tanchat': {
-      id: '/demo/tanchat'
-      path: '/demo/tanchat'
-      fullPath: '/demo/tanchat'
-      preLoaderRoute: typeof DemoTanchatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/store': {
-      id: '/demo/store'
-      path: '/demo/store'
-      fullPath: '/demo/store'
-      preLoaderRoute: typeof DemoStoreRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/drizzle': {
-      id: '/demo/drizzle'
-      path: '/demo/drizzle'
-      fullPath: '/demo/drizzle'
-      preLoaderRoute: typeof DemoDrizzleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/ai/chat': {
       id: '/ai/chat'
       path: '/ai/chat'
@@ -649,95 +321,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/example/guitars/': {
-      id: '/example/guitars/'
-      path: '/example/guitars'
-      fullPath: '/example/guitars'
-      preLoaderRoute: typeof ExampleGuitarsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/document-upload2/_invoice/': {
-      id: '/document-upload2/_invoice/'
-      path: '/'
-      fullPath: '/document-upload2/'
-      preLoaderRoute: typeof DocumentUpload2InvoiceIndexRouteImport
-      parentRoute: typeof DocumentUpload2Route
-    }
     '/api/invoice/': {
       id: '/api/invoice/'
       path: '/api/invoice'
       fullPath: '/api/invoice'
       preLoaderRoute: typeof ApiInvoiceIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/api/ai/': {
-      id: '/api/ai/'
-      path: '/api/ai'
-      fullPath: '/api/ai'
-      preLoaderRoute: typeof ApiAiIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/example/guitars/$guitarId': {
-      id: '/example/guitars/$guitarId'
-      path: '/example/guitars/$guitarId'
-      fullPath: '/example/guitars/$guitarId'
-      preLoaderRoute: typeof ExampleGuitarsGuitarIdRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/document-upload2/_invoice/$doc_id': {
-      id: '/document-upload2/_invoice/$doc_id'
-      path: '/$doc_id'
-      fullPath: '/document-upload2/$doc_id'
-      preLoaderRoute: typeof DocumentUpload2InvoiceDoc_idRouteImport
-      parentRoute: typeof DocumentUpload2Route
-    }
-    '/demo/start/server-funcs': {
-      id: '/demo/start/server-funcs'
-      path: '/demo/start/server-funcs'
-      fullPath: '/demo/start/server-funcs'
-      preLoaderRoute: typeof DemoStartServerFuncsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/api-request': {
-      id: '/demo/start/api-request'
-      path: '/demo/start/api-request'
-      fullPath: '/demo/start/api-request'
-      preLoaderRoute: typeof DemoStartApiRequestRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/form/simple': {
-      id: '/demo/form/simple'
-      path: '/demo/form/simple'
-      fullPath: '/demo/form/simple'
-      preLoaderRoute: typeof DemoFormSimpleRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/form/address': {
-      id: '/demo/form/address'
-      path: '/demo/form/address'
-      fullPath: '/demo/form/address'
-      preLoaderRoute: typeof DemoFormAddressRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/tq-todos': {
-      id: '/demo/api/tq-todos'
-      path: '/demo/api/tq-todos'
-      fullPath: '/demo/api/tq-todos'
-      preLoaderRoute: typeof DemoApiTqTodosRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/tanchat': {
-      id: '/demo/api/tanchat'
-      path: '/demo/api/tanchat'
-      fullPath: '/demo/api/tanchat'
-      preLoaderRoute: typeof DemoApiTanchatRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/api/names': {
-      id: '/demo/api/names'
-      path: '/demo/api/names'
-      fullPath: '/demo/api/names'
-      preLoaderRoute: typeof DemoApiNamesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/validation/test': {
@@ -810,32 +398,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiBirComplianceTestRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/demo/start/ssr/': {
-      id: '/demo/start/ssr/'
-      path: '/demo/start/ssr'
-      fullPath: '/demo/start/ssr'
-      preLoaderRoute: typeof DemoStartSsrIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/spa-mode': {
-      id: '/demo/start/ssr/spa-mode'
-      path: '/demo/start/ssr/spa-mode'
-      fullPath: '/demo/start/ssr/spa-mode'
-      preLoaderRoute: typeof DemoStartSsrSpaModeRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/full-ssr': {
-      id: '/demo/start/ssr/full-ssr'
-      path: '/demo/start/ssr/full-ssr'
-      fullPath: '/demo/start/ssr/full-ssr'
-      preLoaderRoute: typeof DemoStartSsrFullSsrRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/demo/start/ssr/data-only': {
-      id: '/demo/start/ssr/data-only'
-      path: '/demo/start/ssr/data-only'
-      fullPath: '/demo/start/ssr/data-only'
-      preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
+    '/api/ai/invoice': {
+      id: '/api/ai/invoice'
+      path: '/api/ai/invoice'
+      fullPath: '/api/ai/invoice'
+      preLoaderRoute: typeof ApiAiInvoiceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/document/$doc_id/validate': {
@@ -855,36 +422,13 @@ declare module '@tanstack/react-router' {
   }
 }
 
-interface DocumentUpload2RouteChildren {
-  DocumentUpload2IndexRoute: typeof DocumentUpload2IndexRoute
-  DocumentUpload2ContractRoute: typeof DocumentUpload2ContractRoute
-  DocumentUpload2InvoiceRoute: typeof DocumentUpload2InvoiceRoute
-  DocumentUpload2InvoiceDoc_idRoute: typeof DocumentUpload2InvoiceDoc_idRoute
-  DocumentUpload2InvoiceIndexRoute: typeof DocumentUpload2InvoiceIndexRoute
-}
-
-const DocumentUpload2RouteChildren: DocumentUpload2RouteChildren = {
-  DocumentUpload2IndexRoute: DocumentUpload2IndexRoute,
-  DocumentUpload2ContractRoute: DocumentUpload2ContractRoute,
-  DocumentUpload2InvoiceRoute: DocumentUpload2InvoiceRoute,
-  DocumentUpload2InvoiceDoc_idRoute: DocumentUpload2InvoiceDoc_idRoute,
-  DocumentUpload2InvoiceIndexRoute: DocumentUpload2InvoiceIndexRoute,
-}
-
-const DocumentUpload2RouteWithChildren = DocumentUpload2Route._addFileChildren(
-  DocumentUpload2RouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AiChatRoute: AiChatRoute,
-  DemoDrizzleRoute: DemoDrizzleRoute,
-  DemoStoreRoute: DemoStoreRoute,
-  DemoTanchatRoute: DemoTanchatRoute,
-  DemoTanstackQueryRoute: DemoTanstackQueryRoute,
   DocumentUploadContractRoute: DocumentUploadContractRoute,
   DocumentUploadInvoiceRoute: DocumentUploadInvoiceRoute,
-  DocumentUpload2Route: DocumentUpload2RouteWithChildren,
+  DocumentsInvoicesRoute: DocumentsInvoicesRoute,
+  ApiAiInvoiceRoute: ApiAiInvoiceRoute,
   ApiBirComplianceTestRoute: ApiBirComplianceTestRoute,
   ApiDocumentUploadContractRoute: ApiDocumentUploadContractRoute,
   ApiDocumentUploadInvoiceRoute: ApiDocumentUploadInvoiceRoute,
@@ -895,23 +439,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiInvoiceDoc_idRoute: ApiInvoiceDoc_idRoute,
   ApiValidationConfigsRoute: ApiValidationConfigsRoute,
   ApiValidationTestRoute: ApiValidationTestRoute,
-  DemoApiNamesRoute: DemoApiNamesRoute,
-  DemoApiTanchatRoute: DemoApiTanchatRoute,
-  DemoApiTqTodosRoute: DemoApiTqTodosRoute,
-  DemoFormAddressRoute: DemoFormAddressRoute,
-  DemoFormSimpleRoute: DemoFormSimpleRoute,
-  DemoStartApiRequestRoute: DemoStartApiRequestRoute,
-  DemoStartServerFuncsRoute: DemoStartServerFuncsRoute,
-  ExampleGuitarsGuitarIdRoute: ExampleGuitarsGuitarIdRoute,
-  ApiAiIndexRoute: ApiAiIndexRoute,
   ApiInvoiceIndexRoute: ApiInvoiceIndexRoute,
-  ExampleGuitarsIndexRoute: ExampleGuitarsIndexRoute,
   ApiDocumentDoc_idBirComplianceRoute: ApiDocumentDoc_idBirComplianceRoute,
   ApiDocumentDoc_idValidateRoute: ApiDocumentDoc_idValidateRoute,
-  DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
-  DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
-  DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
-  DemoStartSsrIndexRoute: DemoStartSsrIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
