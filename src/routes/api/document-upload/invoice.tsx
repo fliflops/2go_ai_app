@@ -5,17 +5,13 @@ import { getDocument, pollUntilCondition, postDocument} from '@/services/paperle
 import path from 'path';
 import { chatResponse, invoiceExtractionPrompt } from '@/services/openai.service';
 import { convertToJsonFormat } from '@/utils/textFormatter';
-import { getInvoice } from '@/services/invoice.service';
+import {createInvoice } from '@/services/invoice.service';
 
 export const Route = createFileRoute('/api/document-upload/invoice')({
     server:{
         handlers:{
             POST: async({request}) => {
                 try{
-
-                    const test = await getInvoice();
-
-                    console.log(test)
 
                     const formData = await request.formData();
                     const file = formData.get('file') as File |null;
@@ -50,14 +46,34 @@ export const Route = createFileRoute('/api/document-upload/invoice')({
                         input: invoiceExtractionPrompt(data.content)
                     })
 
-                    //save to database
-                    
+                    const aiOutput = convertToJsonFormat(aiResponse.output_text)
 
+                    //save to database
+                    await createInvoice({
+                        ocr_id: Number(uploadInfo[0].related_document) as number,
+                        invoiceType: aiOutput.parsed.invoice_type as string,
+                        invoiceNumber: aiOutput.parsed.invoice_number as string,
+                        invoiceDate: aiOutput.parsed.invoice_date as string,
+                        vendorName: aiOutput.parsed.vendor_name as string,
+                        vendorTin: aiOutput.parsed.vendor_tin as string,
+                        customerName: aiOutput.parsed.customer_name as string,
+                        customerTin: aiOutput.parsed.customer_tin as string,
+                        totalAmount: aiOutput.parsed.total_amount as string,
+                        currency: aiOutput.parsed.currency as string,
+                        vatAmount: aiOutput.parsed.vat_amount as string,
+                        parsedData: aiOutput.parsed,
+                        signaturePresent: aiOutput.parsed.signature_present,
+                        birAtp: aiOutput.parsed.bir_atp,
+                        attachmentValidationStatus: 'pending',
+                        birValidationStatus: 'pending',
+                        amountValidationStatus: 'pending'
+                    })
+                    
                     return json({
                         success:true,
                         status: uploadInfo[0]?.status,
                         result: uploadInfo[0]?.result,
-                        ai_output: convertToJsonFormat(aiResponse.output_text),
+                        ai_output: aiOutput,
                         data
                     })
 

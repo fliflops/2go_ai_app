@@ -1,4 +1,4 @@
-import {char, integer, varchar,date, boolean, timestamp, pgSchema, pgTable } from 'drizzle-orm/pg-core'
+import {char, integer, varchar,date, boolean, timestamp, pgSchema, json } from 'drizzle-orm/pg-core'
 import { createSelectSchema } from "drizzle-zod";
 import { nanoid } from 'nanoid'
 import {z} from 'zod';
@@ -10,6 +10,7 @@ export const invoice_tbl = schema.table('invoice_tbl',
         .primaryKey()
         .$defaultFn(() => nanoid()),
         ocr_id:integer('ocr_id').unique(),
+        invoiceType: varchar('invoice_type', {length: 255}),
         invoiceNumber:  varchar('invoice_number', { length: 255 }),
         invoiceDate:    date('invoice_date'),
         vendorName:     varchar('vendor_name', { length: 500 }),
@@ -24,6 +25,7 @@ export const invoice_tbl = schema.table('invoice_tbl',
         attachmentValidationStatus: varchar('attachment_validation_status', { length: 50 }).default('pending'),
         birValidationStatus: varchar('bir_validation_status', { length: 50 }).default('pending'),
         amountValidationStatus: varchar('amount_validation_status', { length: 50 }).default('pending'),
+        parsedData:     json('parsed_data'),
         createdAt:      timestamp('created_at').defaultNow(),
         updatedAt:      timestamp('updated_at').defaultNow().$onUpdateFn(() => new Date()),
 
