@@ -35,13 +35,22 @@ import { Route as DemoFormAddressRouteImport } from './routes/demo/form.address'
 import { Route as DemoApiTqTodosRouteImport } from './routes/demo/api.tq-todos'
 import { Route as DemoApiTanchatRouteImport } from './routes/demo/api.tanchat'
 import { Route as DemoApiNamesRouteImport } from './routes/demo/api.names'
+import { Route as ApiValidationTestRouteImport } from './routes/api/validation/test'
+import { Route as ApiValidationConfigsRouteImport } from './routes/api/validation/configs'
 import { Route as ApiInvoiceDoc_idRouteImport } from './routes/api/invoice/$doc_id'
+import { Route as ApiDocumentValidateRouteImport } from './routes/api/document/validate'
+import { Route as ApiDocumentBirComplianceRouteImport } from './routes/api/document/bir-compliance'
+import { Route as ApiDocumentBatchValidateRouteImport } from './routes/api/document/batch-validate'
+import { Route as ApiDocumentBatchBirComplianceRouteImport } from './routes/api/document/batch-bir-compliance'
 import { Route as ApiDocumentUploadInvoiceRouteImport } from './routes/api/document-upload/invoice'
 import { Route as ApiDocumentUploadContractRouteImport } from './routes/api/document-upload/contract'
+import { Route as ApiBirComplianceTestRouteImport } from './routes/api/bir-compliance/test'
 import { Route as DemoStartSsrIndexRouteImport } from './routes/demo/start.ssr.index'
 import { Route as DemoStartSsrSpaModeRouteImport } from './routes/demo/start.ssr.spa-mode'
 import { Route as DemoStartSsrFullSsrRouteImport } from './routes/demo/start.ssr.full-ssr'
 import { Route as DemoStartSsrDataOnlyRouteImport } from './routes/demo/start.ssr.data-only'
+import { Route as ApiDocumentDoc_idValidateRouteImport } from './routes/api/document/$doc_id/validate'
+import { Route as ApiDocumentDoc_idBirComplianceRouteImport } from './routes/api/document/$doc_id/bir-compliance'
 
 const DocumentUpload2RouteImport = createFileRoute('/document-upload2')()
 
@@ -171,11 +180,44 @@ const DemoApiNamesRoute = DemoApiNamesRouteImport.update({
   path: '/demo/api/names',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiValidationTestRoute = ApiValidationTestRouteImport.update({
+  id: '/api/validation/test',
+  path: '/api/validation/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiValidationConfigsRoute = ApiValidationConfigsRouteImport.update({
+  id: '/api/validation/configs',
+  path: '/api/validation/configs',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiInvoiceDoc_idRoute = ApiInvoiceDoc_idRouteImport.update({
   id: '/api/invoice/$doc_id',
   path: '/api/invoice/$doc_id',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiDocumentValidateRoute = ApiDocumentValidateRouteImport.update({
+  id: '/api/document/validate',
+  path: '/api/document/validate',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiDocumentBirComplianceRoute =
+  ApiDocumentBirComplianceRouteImport.update({
+    id: '/api/document/bir-compliance',
+    path: '/api/document/bir-compliance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiDocumentBatchValidateRoute =
+  ApiDocumentBatchValidateRouteImport.update({
+    id: '/api/document/batch-validate',
+    path: '/api/document/batch-validate',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiDocumentBatchBirComplianceRoute =
+  ApiDocumentBatchBirComplianceRouteImport.update({
+    id: '/api/document/batch-bir-compliance',
+    path: '/api/document/batch-bir-compliance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const ApiDocumentUploadInvoiceRoute =
   ApiDocumentUploadInvoiceRouteImport.update({
     id: '/api/document-upload/invoice',
@@ -188,6 +230,11 @@ const ApiDocumentUploadContractRoute =
     path: '/api/document-upload/contract',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiBirComplianceTestRoute = ApiBirComplianceTestRouteImport.update({
+  id: '/api/bir-compliance/test',
+  path: '/api/bir-compliance/test',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const DemoStartSsrIndexRoute = DemoStartSsrIndexRouteImport.update({
   id: '/demo/start/ssr/',
   path: '/demo/start/ssr/',
@@ -208,6 +255,18 @@ const DemoStartSsrDataOnlyRoute = DemoStartSsrDataOnlyRouteImport.update({
   path: '/demo/start/ssr/data-only',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiDocumentDoc_idValidateRoute =
+  ApiDocumentDoc_idValidateRouteImport.update({
+    id: '/api/document/$doc_id/validate',
+    path: '/api/document/$doc_id/validate',
+    getParentRoute: () => rootRouteImport,
+  } as any)
+const ApiDocumentDoc_idBirComplianceRoute =
+  ApiDocumentDoc_idBirComplianceRouteImport.update({
+    id: '/api/document/$doc_id/bir-compliance',
+    path: '/api/document/$doc_id/bir-compliance',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -221,9 +280,16 @@ export interface FileRoutesByFullPath {
   '/document-upload2': typeof DocumentUpload2IndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
+  '/api/document/batch-bir-compliance': typeof ApiDocumentBatchBirComplianceRoute
+  '/api/document/batch-validate': typeof ApiDocumentBatchValidateRoute
+  '/api/document/bir-compliance': typeof ApiDocumentBirComplianceRoute
+  '/api/document/validate': typeof ApiDocumentValidateRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
+  '/api/validation/configs': typeof ApiValidationConfigsRoute
+  '/api/validation/test': typeof ApiValidationTestRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tanchat': typeof DemoApiTanchatRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -237,6 +303,8 @@ export interface FileRoutesByFullPath {
   '/api/invoice': typeof ApiInvoiceIndexRoute
   '/document-upload2/': typeof DocumentUpload2InvoiceIndexRoute
   '/example/guitars': typeof ExampleGuitarsIndexRoute
+  '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
+  '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -254,9 +322,16 @@ export interface FileRoutesByTo {
   '/document-upload2': typeof DocumentUpload2InvoiceIndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
+  '/api/document/batch-bir-compliance': typeof ApiDocumentBatchBirComplianceRoute
+  '/api/document/batch-validate': typeof ApiDocumentBatchValidateRoute
+  '/api/document/bir-compliance': typeof ApiDocumentBirComplianceRoute
+  '/api/document/validate': typeof ApiDocumentValidateRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
+  '/api/validation/configs': typeof ApiValidationConfigsRoute
+  '/api/validation/test': typeof ApiValidationTestRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tanchat': typeof DemoApiTanchatRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -269,6 +344,8 @@ export interface FileRoutesByTo {
   '/api/ai': typeof ApiAiIndexRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
   '/example/guitars': typeof ExampleGuitarsIndexRoute
+  '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
+  '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -288,9 +365,16 @@ export interface FileRoutesById {
   '/document-upload2/_index': typeof DocumentUpload2IndexRoute
   '/document-upload2/contract': typeof DocumentUpload2ContractRoute
   '/document-upload2/invoice': typeof DocumentUpload2InvoiceRoute
+  '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
+  '/api/document/batch-bir-compliance': typeof ApiDocumentBatchBirComplianceRoute
+  '/api/document/batch-validate': typeof ApiDocumentBatchValidateRoute
+  '/api/document/bir-compliance': typeof ApiDocumentBirComplianceRoute
+  '/api/document/validate': typeof ApiDocumentValidateRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
+  '/api/validation/configs': typeof ApiValidationConfigsRoute
+  '/api/validation/test': typeof ApiValidationTestRoute
   '/demo/api/names': typeof DemoApiNamesRoute
   '/demo/api/tanchat': typeof DemoApiTanchatRoute
   '/demo/api/tq-todos': typeof DemoApiTqTodosRoute
@@ -304,6 +388,8 @@ export interface FileRoutesById {
   '/api/invoice/': typeof ApiInvoiceIndexRoute
   '/document-upload2/_invoice/': typeof DocumentUpload2InvoiceIndexRoute
   '/example/guitars/': typeof ExampleGuitarsIndexRoute
+  '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
+  '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
   '/demo/start/ssr/data-only': typeof DemoStartSsrDataOnlyRoute
   '/demo/start/ssr/full-ssr': typeof DemoStartSsrFullSsrRoute
   '/demo/start/ssr/spa-mode': typeof DemoStartSsrSpaModeRoute
@@ -323,9 +409,16 @@ export interface FileRouteTypes {
     | '/document-upload2'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
+    | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
+    | '/api/document/batch-bir-compliance'
+    | '/api/document/batch-validate'
+    | '/api/document/bir-compliance'
+    | '/api/document/validate'
     | '/api/invoice/$doc_id'
+    | '/api/validation/configs'
+    | '/api/validation/test'
     | '/demo/api/names'
     | '/demo/api/tanchat'
     | '/demo/api/tq-todos'
@@ -339,6 +432,8 @@ export interface FileRouteTypes {
     | '/api/invoice'
     | '/document-upload2/'
     | '/example/guitars'
+    | '/api/document/$doc_id/bir-compliance'
+    | '/api/document/$doc_id/validate'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -356,9 +451,16 @@ export interface FileRouteTypes {
     | '/document-upload2'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
+    | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
+    | '/api/document/batch-bir-compliance'
+    | '/api/document/batch-validate'
+    | '/api/document/bir-compliance'
+    | '/api/document/validate'
     | '/api/invoice/$doc_id'
+    | '/api/validation/configs'
+    | '/api/validation/test'
     | '/demo/api/names'
     | '/demo/api/tanchat'
     | '/demo/api/tq-todos'
@@ -371,6 +473,8 @@ export interface FileRouteTypes {
     | '/api/ai'
     | '/api/invoice'
     | '/example/guitars'
+    | '/api/document/$doc_id/bir-compliance'
+    | '/api/document/$doc_id/validate'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -389,9 +493,16 @@ export interface FileRouteTypes {
     | '/document-upload2/_index'
     | '/document-upload2/contract'
     | '/document-upload2/invoice'
+    | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
+    | '/api/document/batch-bir-compliance'
+    | '/api/document/batch-validate'
+    | '/api/document/bir-compliance'
+    | '/api/document/validate'
     | '/api/invoice/$doc_id'
+    | '/api/validation/configs'
+    | '/api/validation/test'
     | '/demo/api/names'
     | '/demo/api/tanchat'
     | '/demo/api/tq-todos'
@@ -405,6 +516,8 @@ export interface FileRouteTypes {
     | '/api/invoice/'
     | '/document-upload2/_invoice/'
     | '/example/guitars/'
+    | '/api/document/$doc_id/bir-compliance'
+    | '/api/document/$doc_id/validate'
     | '/demo/start/ssr/data-only'
     | '/demo/start/ssr/full-ssr'
     | '/demo/start/ssr/spa-mode'
@@ -421,9 +534,16 @@ export interface RootRouteChildren {
   DocumentUploadContractRoute: typeof DocumentUploadContractRoute
   DocumentUploadInvoiceRoute: typeof DocumentUploadInvoiceRoute
   DocumentUpload2Route: typeof DocumentUpload2RouteWithChildren
+  ApiBirComplianceTestRoute: typeof ApiBirComplianceTestRoute
   ApiDocumentUploadContractRoute: typeof ApiDocumentUploadContractRoute
   ApiDocumentUploadInvoiceRoute: typeof ApiDocumentUploadInvoiceRoute
+  ApiDocumentBatchBirComplianceRoute: typeof ApiDocumentBatchBirComplianceRoute
+  ApiDocumentBatchValidateRoute: typeof ApiDocumentBatchValidateRoute
+  ApiDocumentBirComplianceRoute: typeof ApiDocumentBirComplianceRoute
+  ApiDocumentValidateRoute: typeof ApiDocumentValidateRoute
   ApiInvoiceDoc_idRoute: typeof ApiInvoiceDoc_idRoute
+  ApiValidationConfigsRoute: typeof ApiValidationConfigsRoute
+  ApiValidationTestRoute: typeof ApiValidationTestRoute
   DemoApiNamesRoute: typeof DemoApiNamesRoute
   DemoApiTanchatRoute: typeof DemoApiTanchatRoute
   DemoApiTqTodosRoute: typeof DemoApiTqTodosRoute
@@ -435,6 +555,8 @@ export interface RootRouteChildren {
   ApiAiIndexRoute: typeof ApiAiIndexRoute
   ApiInvoiceIndexRoute: typeof ApiInvoiceIndexRoute
   ExampleGuitarsIndexRoute: typeof ExampleGuitarsIndexRoute
+  ApiDocumentDoc_idBirComplianceRoute: typeof ApiDocumentDoc_idBirComplianceRoute
+  ApiDocumentDoc_idValidateRoute: typeof ApiDocumentDoc_idValidateRoute
   DemoStartSsrDataOnlyRoute: typeof DemoStartSsrDataOnlyRoute
   DemoStartSsrFullSsrRoute: typeof DemoStartSsrFullSsrRoute
   DemoStartSsrSpaModeRoute: typeof DemoStartSsrSpaModeRoute
@@ -618,11 +740,53 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof DemoApiNamesRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/validation/test': {
+      id: '/api/validation/test'
+      path: '/api/validation/test'
+      fullPath: '/api/validation/test'
+      preLoaderRoute: typeof ApiValidationTestRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/validation/configs': {
+      id: '/api/validation/configs'
+      path: '/api/validation/configs'
+      fullPath: '/api/validation/configs'
+      preLoaderRoute: typeof ApiValidationConfigsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/invoice/$doc_id': {
       id: '/api/invoice/$doc_id'
       path: '/api/invoice/$doc_id'
       fullPath: '/api/invoice/$doc_id'
       preLoaderRoute: typeof ApiInvoiceDoc_idRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/document/validate': {
+      id: '/api/document/validate'
+      path: '/api/document/validate'
+      fullPath: '/api/document/validate'
+      preLoaderRoute: typeof ApiDocumentValidateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/document/bir-compliance': {
+      id: '/api/document/bir-compliance'
+      path: '/api/document/bir-compliance'
+      fullPath: '/api/document/bir-compliance'
+      preLoaderRoute: typeof ApiDocumentBirComplianceRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/document/batch-validate': {
+      id: '/api/document/batch-validate'
+      path: '/api/document/batch-validate'
+      fullPath: '/api/document/batch-validate'
+      preLoaderRoute: typeof ApiDocumentBatchValidateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/document/batch-bir-compliance': {
+      id: '/api/document/batch-bir-compliance'
+      path: '/api/document/batch-bir-compliance'
+      fullPath: '/api/document/batch-bir-compliance'
+      preLoaderRoute: typeof ApiDocumentBatchBirComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/document-upload/invoice': {
@@ -637,6 +801,13 @@ declare module '@tanstack/react-router' {
       path: '/api/document-upload/contract'
       fullPath: '/api/document-upload/contract'
       preLoaderRoute: typeof ApiDocumentUploadContractRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/bir-compliance/test': {
+      id: '/api/bir-compliance/test'
+      path: '/api/bir-compliance/test'
+      fullPath: '/api/bir-compliance/test'
+      preLoaderRoute: typeof ApiBirComplianceTestRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/demo/start/ssr/': {
@@ -665,6 +836,20 @@ declare module '@tanstack/react-router' {
       path: '/demo/start/ssr/data-only'
       fullPath: '/demo/start/ssr/data-only'
       preLoaderRoute: typeof DemoStartSsrDataOnlyRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/document/$doc_id/validate': {
+      id: '/api/document/$doc_id/validate'
+      path: '/api/document/$doc_id/validate'
+      fullPath: '/api/document/$doc_id/validate'
+      preLoaderRoute: typeof ApiDocumentDoc_idValidateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/document/$doc_id/bir-compliance': {
+      id: '/api/document/$doc_id/bir-compliance'
+      path: '/api/document/$doc_id/bir-compliance'
+      fullPath: '/api/document/$doc_id/bir-compliance'
+      preLoaderRoute: typeof ApiDocumentDoc_idBirComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
@@ -700,9 +885,16 @@ const rootRouteChildren: RootRouteChildren = {
   DocumentUploadContractRoute: DocumentUploadContractRoute,
   DocumentUploadInvoiceRoute: DocumentUploadInvoiceRoute,
   DocumentUpload2Route: DocumentUpload2RouteWithChildren,
+  ApiBirComplianceTestRoute: ApiBirComplianceTestRoute,
   ApiDocumentUploadContractRoute: ApiDocumentUploadContractRoute,
   ApiDocumentUploadInvoiceRoute: ApiDocumentUploadInvoiceRoute,
+  ApiDocumentBatchBirComplianceRoute: ApiDocumentBatchBirComplianceRoute,
+  ApiDocumentBatchValidateRoute: ApiDocumentBatchValidateRoute,
+  ApiDocumentBirComplianceRoute: ApiDocumentBirComplianceRoute,
+  ApiDocumentValidateRoute: ApiDocumentValidateRoute,
   ApiInvoiceDoc_idRoute: ApiInvoiceDoc_idRoute,
+  ApiValidationConfigsRoute: ApiValidationConfigsRoute,
+  ApiValidationTestRoute: ApiValidationTestRoute,
   DemoApiNamesRoute: DemoApiNamesRoute,
   DemoApiTanchatRoute: DemoApiTanchatRoute,
   DemoApiTqTodosRoute: DemoApiTqTodosRoute,
@@ -714,6 +906,8 @@ const rootRouteChildren: RootRouteChildren = {
   ApiAiIndexRoute: ApiAiIndexRoute,
   ApiInvoiceIndexRoute: ApiInvoiceIndexRoute,
   ExampleGuitarsIndexRoute: ExampleGuitarsIndexRoute,
+  ApiDocumentDoc_idBirComplianceRoute: ApiDocumentDoc_idBirComplianceRoute,
+  ApiDocumentDoc_idValidateRoute: ApiDocumentDoc_idValidateRoute,
   DemoStartSsrDataOnlyRoute: DemoStartSsrDataOnlyRoute,
   DemoStartSsrFullSsrRoute: DemoStartSsrFullSsrRoute,
   DemoStartSsrSpaModeRoute: DemoStartSsrSpaModeRoute,
