@@ -1,7 +1,8 @@
 import { createFileRoute } from '@tanstack/react-router'
 import {json} from '@tanstack/react-start';
 import { writeFile } from 'node:fs/promises';
-import {getDocuments, postDocument} from '@/services/paperless.service';
+import {postDocument} from '@/services/paperless.service';
+import {getPaginatedInvoice} from '@/services/invoice.service';
 import path from 'path';
 
 export const Route = createFileRoute('/api/invoice/')({
@@ -40,22 +41,30 @@ export const Route = createFileRoute('/api/invoice/')({
         },
 		GET: async({request}) => {
 			try{
-				const url = new URL(request.url);
-				const page = parseInt(url.searchParams.get('page') || '1');
-				const limit = parseInt(url.searchParams.get('limit') || '10');
-				const query = url.searchParams.get('query') || '';
-				const ordering = url.searchParams.get('ordering') || '-created';
-
-				const response = await getDocuments({
+				const url = new URL(request.url)
+				const page = parseInt(url.searchParams.get('page') || '1')
+				const limit = parseInt(url.searchParams.get('limit') || '10')
+				const search = url.searchParams.get('search') || ''
+				const sortBy = url.searchParams.get('sortBy') || 'createdAt'
+				const sortOrder = url.searchParams.get('sortOrder') || 'desc'
+				
+				const data = await getPaginatedInvoice({
 					page,
 					limit,
-					query,
-					ordering
+					search,
+					sortBy,
+					sortOrder
 				})
 
-				return json({...response})
+				return json(data,{
+					status: 200,
+					headers:{
+						'Content-Type': 'application/json'
+					}
+				})
+			
 			}
-				catch(error:any){
+			catch(error:any){
 				return json({
 					success: false,
 					error: error.message,
