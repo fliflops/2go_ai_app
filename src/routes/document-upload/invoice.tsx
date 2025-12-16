@@ -30,6 +30,7 @@ function RouteComponent() {
                   
               </div>
                 <DropzoneUpload
+                  queryKey={['invoices']}
                   apiEndpoint='/api/document-upload/invoice'
                   onSuccess={(data) => {
                     setResult(data.result)

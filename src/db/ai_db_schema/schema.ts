@@ -25,6 +25,7 @@ export const invoice_tbl = schema.table('invoice_tbl',
         attachmentValidationStatus: varchar('attachment_validation_status', { length: 50 }).default('pending'),
         birValidationStatus: varchar('bir_validation_status', { length: 50 }).default('pending'),
         amountValidationStatus: varchar('amount_validation_status', { length: 50 }).default('pending'),
+        contractValidationStatus: varchar('contract_validation_status',{length:50}).default('pending'),
         parsedData:     json('parsed_data'),
         createdAt:      timestamp('created_at').defaultNow(),
         updatedAt:      timestamp('updated_at').defaultNow().$onUpdateFn(() => new Date()),
@@ -41,5 +42,16 @@ export const insertInvoiceSchema = createSelectSchema(invoice_tbl)
 });
 
 export type InvoiceParams = z.infer<typeof insertInvoiceSchema>
+
+
+export const invoice_contract_validation_tbl = schema.table('invoice_contract_validation_tbl', {
+     id: char("id", { length: 36 })
+    .primaryKey()
+    .$defaultFn(() => nanoid()),
+    fkInvoiceId: char("fk_invoice_Id",{length: 36}).references(() => invoice_tbl.id),
+    validationDetails: json('validation_details'),
+    createdAt:      timestamp('created_at').defaultNow(),
+    updatedAt:      timestamp('updated_at').defaultNow().$onUpdateFn(() => new Date()),
+})
 
 

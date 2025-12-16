@@ -5,9 +5,6 @@ export const Route = createFileRoute('/documents/invoices')({
   component: RouteComponent,
 })
 
-const fetchInvoices = async() => {
-    
-}
 
 function RouteComponent() {
   return <div className='container mx-auto py-10'>

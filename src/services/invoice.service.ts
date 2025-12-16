@@ -1,11 +1,13 @@
 import {db} from '@/db/ai_db_schema';
-import {desc,count, sql} from 'drizzle-orm'
-import {invoice_tbl } from '@/db/ai_db_schema/schema';
+import {desc,count, sql, and, SQL, eq} from 'drizzle-orm'
+import {invoice_contract_validation_tbl, invoice_tbl } from '@/db/ai_db_schema/schema';
 import type {InvoiceParams} from '@/db/ai_db_schema/schema';
 
-export const getInvoice = async() => {
-    const invoice = await db.select().from(invoice_tbl);
-    return invoice
+export const getInvoice = async(filters:SQL[]) => {
+    const conditions = filters.length > 0 ? and(...filters) : undefined
+    const invoice = await db.select().from(invoice_tbl).where(conditions).limit(1)
+    if(invoice.length > 0) return invoice[0] 
+    return null
 }
 
 export const createInvoice = async(invoice:InvoiceParams) => {
@@ -88,3 +90,21 @@ export const getPaginatedInvoice = async({
     }
 
 }
+
+export const updateInvoice = async (params:{where:{
+    id: string
+}; data:{
+    parsedData: any;
+    contractValidationStatus: string;
+    amountValidationStatus:string;
+}}) => {
+
+    const {where,data} = params;
+
+    await db.update(invoice_tbl).set({
+        parsedData: data.parsedData,
+        contractValidationStatus: data.contractValidationStatus,
+        amountValidationStatus: data.amountValidationStatus
+    })
+    .where(eq(invoice_tbl.id, where.id))
+} 

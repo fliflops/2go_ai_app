@@ -3,7 +3,7 @@ import {invoiceExtractionPrompt, openai} from '@/services/openai.service';
 import {json} from '@tanstack/react-start';
 
 
-export const Route = createFileRoute('/api/ai/invoice')({
+export const Route = createFileRoute('/api/ai/invoice/')({
     server:{
         handlers:{
             POST: async({request})=> {

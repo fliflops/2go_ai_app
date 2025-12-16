@@ -1,0 +1,1 @@
+ALTER TABLE "ai_db_schema"."invoice_tbl" ADD COLUMN "contract_validation_status" varchar(50) DEFAULT 'pending';

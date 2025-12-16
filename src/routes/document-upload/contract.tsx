@@ -30,7 +30,7 @@ function RouteComponent() {
 			<DropzoneUpload
 				apiEndpoint='/api/document-upload/contract'
 				onSuccess={(data) => {
-				setResult(data.result)
+					setResult(data.result)
 				}}
 				onReset={() => {setResult(null)}}
 			/>
