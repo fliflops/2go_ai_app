@@ -69,6 +69,24 @@ export type InvoiceData = z.infer<typeof InvoiceDataSchema>
 
 // Predefined validation rule sets
 export const VALIDATION_RULE_SETS: Record<string, ValidationRuleSet> = {
+  'bir_invoice': {
+    name: 'BIR 2307 Invoice Validation',
+    description: 'BIR 2307 existence validation for invoices',
+    rules: [
+      {
+        field: 'form_2307_attached',
+        required: true,
+        validator: (value: string | null) => value !== null && value.trim().length > 0,
+        errorMessage: 'BIR Form 2307 is required'
+      },
+      {
+        field: 'form_2307_consistent',
+        required: true,
+        validator: (value: string | null) => value !== null && value.trim().length > 0,
+        errorMessage: 'BIR Form 2307 contents must be aligned with invoice data.'
+      }
+    ]
+  },
   'standard_invoice': {
     name: 'Standard Invoice Validation',
     description: 'Basic validation for standard Philippine invoices',
@@ -189,7 +207,7 @@ export const VALIDATION_RULE_SETS: Record<string, ValidationRuleSet> = {
  */
 export async function validateInvoiceData(
   invoiceData: any,
-  ruleSetName: string = 'standard_invoice'
+  ruleSetName: string = 'demo_invoice'
 ): Promise<ValidationResult> {
   try {
     // Validate input schema
