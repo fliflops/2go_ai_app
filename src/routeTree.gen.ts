@@ -25,9 +25,10 @@ import { Route as ApiDocumentBatchBirComplianceRouteImport } from './routes/api/
 import { Route as ApiDocumentUploadInvoiceRouteImport } from './routes/api/document-upload/invoice'
 import { Route as ApiDocumentUploadContractRouteImport } from './routes/api/document-upload/contract'
 import { Route as ApiBirComplianceTestRouteImport } from './routes/api/bir-compliance/test'
-import { Route as ApiAiInvoiceRouteImport } from './routes/api/ai/invoice'
+import { Route as ApiAiInvoiceIndexRouteImport } from './routes/api/ai/invoice/index'
 import { Route as ApiDocumentDoc_idValidateRouteImport } from './routes/api/document/$doc_id/validate'
 import { Route as ApiDocumentDoc_idBirComplianceRouteImport } from './routes/api/document/$doc_id/bir-compliance'
+import { Route as ApiAiInvoiceInvoiceNoRouteImport } from './routes/api/ai/invoice/$invoiceNo'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -114,9 +115,9 @@ const ApiBirComplianceTestRoute = ApiBirComplianceTestRouteImport.update({
   path: '/api/bir-compliance/test',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ApiAiInvoiceRoute = ApiAiInvoiceRouteImport.update({
-  id: '/api/ai/invoice',
-  path: '/api/ai/invoice',
+const ApiAiInvoiceIndexRoute = ApiAiInvoiceIndexRouteImport.update({
+  id: '/api/ai/invoice/',
+  path: '/api/ai/invoice/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiDocumentDoc_idValidateRoute =
@@ -131,6 +132,11 @@ const ApiDocumentDoc_idBirComplianceRoute =
     path: '/api/document/$doc_id/bir-compliance',
     getParentRoute: () => rootRouteImport,
   } as any)
+const ApiAiInvoiceInvoiceNoRoute = ApiAiInvoiceInvoiceNoRouteImport.update({
+  id: '/api/ai/invoice/$invoiceNo',
+  path: '/api/ai/invoice/$invoiceNo',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -138,7 +144,6 @@ export interface FileRoutesByFullPath {
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
   '/documents/invoices': typeof DocumentsInvoicesRoute
-  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
@@ -150,8 +155,10 @@ export interface FileRoutesByFullPath {
   '/api/validation/configs': typeof ApiValidationConfigsRoute
   '/api/validation/test': typeof ApiValidationTestRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
+  '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
   '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
   '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -159,7 +166,6 @@ export interface FileRoutesByTo {
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
   '/documents/invoices': typeof DocumentsInvoicesRoute
-  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
@@ -171,8 +177,10 @@ export interface FileRoutesByTo {
   '/api/validation/configs': typeof ApiValidationConfigsRoute
   '/api/validation/test': typeof ApiValidationTestRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
+  '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
   '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
   '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
+  '/api/ai/invoice': typeof ApiAiInvoiceIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -181,7 +189,6 @@ export interface FileRoutesById {
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
   '/documents/invoices': typeof DocumentsInvoicesRoute
-  '/api/ai/invoice': typeof ApiAiInvoiceRoute
   '/api/bir-compliance/test': typeof ApiBirComplianceTestRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
@@ -193,8 +200,10 @@ export interface FileRoutesById {
   '/api/validation/configs': typeof ApiValidationConfigsRoute
   '/api/validation/test': typeof ApiValidationTestRoute
   '/api/invoice/': typeof ApiInvoiceIndexRoute
+  '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
   '/api/document/$doc_id/bir-compliance': typeof ApiDocumentDoc_idBirComplianceRoute
   '/api/document/$doc_id/validate': typeof ApiDocumentDoc_idValidateRoute
+  '/api/ai/invoice/': typeof ApiAiInvoiceIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -204,7 +213,6 @@ export interface FileRouteTypes {
     | '/document-upload/contract'
     | '/document-upload/invoice'
     | '/documents/invoices'
-    | '/api/ai/invoice'
     | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
@@ -216,8 +224,10 @@ export interface FileRouteTypes {
     | '/api/validation/configs'
     | '/api/validation/test'
     | '/api/invoice'
+    | '/api/ai/invoice/$invoiceNo'
     | '/api/document/$doc_id/bir-compliance'
     | '/api/document/$doc_id/validate'
+    | '/api/ai/invoice'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -225,7 +235,6 @@ export interface FileRouteTypes {
     | '/document-upload/contract'
     | '/document-upload/invoice'
     | '/documents/invoices'
-    | '/api/ai/invoice'
     | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
@@ -237,8 +246,10 @@ export interface FileRouteTypes {
     | '/api/validation/configs'
     | '/api/validation/test'
     | '/api/invoice'
+    | '/api/ai/invoice/$invoiceNo'
     | '/api/document/$doc_id/bir-compliance'
     | '/api/document/$doc_id/validate'
+    | '/api/ai/invoice'
   id:
     | '__root__'
     | '/'
@@ -246,7 +257,6 @@ export interface FileRouteTypes {
     | '/document-upload/contract'
     | '/document-upload/invoice'
     | '/documents/invoices'
-    | '/api/ai/invoice'
     | '/api/bir-compliance/test'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
@@ -258,8 +268,10 @@ export interface FileRouteTypes {
     | '/api/validation/configs'
     | '/api/validation/test'
     | '/api/invoice/'
+    | '/api/ai/invoice/$invoiceNo'
     | '/api/document/$doc_id/bir-compliance'
     | '/api/document/$doc_id/validate'
+    | '/api/ai/invoice/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -268,7 +280,6 @@ export interface RootRouteChildren {
   DocumentUploadContractRoute: typeof DocumentUploadContractRoute
   DocumentUploadInvoiceRoute: typeof DocumentUploadInvoiceRoute
   DocumentsInvoicesRoute: typeof DocumentsInvoicesRoute
-  ApiAiInvoiceRoute: typeof ApiAiInvoiceRoute
   ApiBirComplianceTestRoute: typeof ApiBirComplianceTestRoute
   ApiDocumentUploadContractRoute: typeof ApiDocumentUploadContractRoute
   ApiDocumentUploadInvoiceRoute: typeof ApiDocumentUploadInvoiceRoute
@@ -280,8 +291,10 @@ export interface RootRouteChildren {
   ApiValidationConfigsRoute: typeof ApiValidationConfigsRoute
   ApiValidationTestRoute: typeof ApiValidationTestRoute
   ApiInvoiceIndexRoute: typeof ApiInvoiceIndexRoute
+  ApiAiInvoiceInvoiceNoRoute: typeof ApiAiInvoiceInvoiceNoRoute
   ApiDocumentDoc_idBirComplianceRoute: typeof ApiDocumentDoc_idBirComplianceRoute
   ApiDocumentDoc_idValidateRoute: typeof ApiDocumentDoc_idValidateRoute
+  ApiAiInvoiceIndexRoute: typeof ApiAiInvoiceIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -398,11 +411,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiBirComplianceTestRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/api/ai/invoice': {
-      id: '/api/ai/invoice'
+    '/api/ai/invoice/': {
+      id: '/api/ai/invoice/'
       path: '/api/ai/invoice'
       fullPath: '/api/ai/invoice'
-      preLoaderRoute: typeof ApiAiInvoiceRouteImport
+      preLoaderRoute: typeof ApiAiInvoiceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/document/$doc_id/validate': {
@@ -419,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiDocumentDoc_idBirComplianceRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/ai/invoice/$invoiceNo': {
+      id: '/api/ai/invoice/$invoiceNo'
+      path: '/api/ai/invoice/$invoiceNo'
+      fullPath: '/api/ai/invoice/$invoiceNo'
+      preLoaderRoute: typeof ApiAiInvoiceInvoiceNoRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
@@ -428,7 +448,6 @@ const rootRouteChildren: RootRouteChildren = {
   DocumentUploadContractRoute: DocumentUploadContractRoute,
   DocumentUploadInvoiceRoute: DocumentUploadInvoiceRoute,
   DocumentsInvoicesRoute: DocumentsInvoicesRoute,
-  ApiAiInvoiceRoute: ApiAiInvoiceRoute,
   ApiBirComplianceTestRoute: ApiBirComplianceTestRoute,
   ApiDocumentUploadContractRoute: ApiDocumentUploadContractRoute,
   ApiDocumentUploadInvoiceRoute: ApiDocumentUploadInvoiceRoute,
@@ -440,8 +459,10 @@ const rootRouteChildren: RootRouteChildren = {
   ApiValidationConfigsRoute: ApiValidationConfigsRoute,
   ApiValidationTestRoute: ApiValidationTestRoute,
   ApiInvoiceIndexRoute: ApiInvoiceIndexRoute,
+  ApiAiInvoiceInvoiceNoRoute: ApiAiInvoiceInvoiceNoRoute,
   ApiDocumentDoc_idBirComplianceRoute: ApiDocumentDoc_idBirComplianceRoute,
   ApiDocumentDoc_idValidateRoute: ApiDocumentDoc_idValidateRoute,
+  ApiAiInvoiceIndexRoute: ApiAiInvoiceIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

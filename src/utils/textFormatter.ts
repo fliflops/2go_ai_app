@@ -47,9 +47,46 @@ export function convertToJsonFormat(text: string): {
       parsed: parsed
     };
   } catch (error) {
+  
     return {
       formatted: formattedText,
       isJson: false
     };
+  }
+}
+
+export function formatTextToJson<T = any>(text: string): T | null {
+  try {
+    // Step 1: Remove outer quotes if present
+    let cleanedText = text.trim();
+    if ((cleanedText.startsWith('"') && cleanedText.endsWith('"')) ||
+        (cleanedText.startsWith("'") && cleanedText.endsWith("'"))) {
+      cleanedText = cleanedText.slice(1, -1);
+    }
+
+    // Step 2: Unescape escaped characters
+    cleanedText = cleanedText
+      .replace(/\\n/g, '\n')
+      .replace(/\\t/g, '\t')
+      .replace(/\\"/g, '"')
+      .replace(/\\'/g, "'")
+      .replace(/\\\\/g, '\\');
+
+    // Step 3: Remove markdown code block syntax
+    cleanedText = cleanedText
+      .replace(/^```json\s*/i, '')
+      .replace(/^```\s*/, '')
+      .replace(/\s*```$/, '');
+
+    // Step 4: Trim whitespace
+    cleanedText = cleanedText.trim();
+
+    // Step 5: Parse JSON
+    const jsonObject = JSON.parse(cleanedText);
+    
+    return jsonObject as T;
+  } catch (error) {
+    console.error('Error parsing JSON:', error);
+    return null;
   }
 }

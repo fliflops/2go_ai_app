@@ -14,7 +14,7 @@ export const Route = createFileRoute('/api/invoice/')({
 				const file = formData.get('file') as File |null;
 				
 				if (!file) {
-				return new Response('No file uploaded', { status: 400 })
+					return new Response('No file uploaded', { status: 400 })
 				}
 
 				const buffer = Buffer.from(await file.arrayBuffer())
@@ -59,7 +59,7 @@ export const Route = createFileRoute('/api/invoice/')({
 				return json(data,{
 					status: 200,
 					headers:{
-						'Content-Type': 'application/json'
+						'Content-Type': 'application/json'	
 					}
 				})
 			

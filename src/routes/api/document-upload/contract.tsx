@@ -27,10 +27,13 @@ export const Route = createFileRoute('/api/document-upload/contract')({
                         title: `CONTRACT_${filename}`
                     });
 
-                    const uploadInfo = await pollUntilCondition({uploadId})
+                    const uploadInfo = await pollUntilCondition({uploadId,  maxAttempts: 50})
                     const data = await getDocument(uploadInfo[0].related_document)
                     
-        
+                    if(uploadInfo[0]?.status === 'FAILURE'){
+                        throw new Error(uploadInfo[0]?.result)
+                    }
+
                      return json({
                         success:true,
                         status: uploadInfo[0]?.status,
@@ -42,7 +45,7 @@ export const Route = createFileRoute('/api/document-upload/contract')({
                 catch(error:any){
                     return json({
                         success: false,
-                        error: error.message,
+                        message: error.message,
                     }, 
                     { status: 500 });
                 }

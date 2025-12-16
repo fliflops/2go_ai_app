@@ -1,0 +1,1 @@
+ALTER TABLE "ai_db_schema"."invoice_contract_validation_tbl" ALTER COLUMN "fk_invoice_Id" SET DATA TYPE char(36);

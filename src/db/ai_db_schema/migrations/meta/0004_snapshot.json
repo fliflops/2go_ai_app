@@ -1,0 +1,234 @@
+{
+  "id": "f11bd96b-5737-4630-809d-4d8e18f39a4f",
+  "prevId": "e197f0a7-b540-463c-a052-1bae44892d98",
+  "version": "7",
+  "dialect": "postgresql",
+  "tables": {
+    "ai_db_schema.invoice_contract_validation_tbl": {
+      "name": "invoice_contract_validation_tbl",
+      "schema": "ai_db_schema",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "fk_invoice_Id": {
+          "name": "fk_invoice_Id",
+          "type": "char",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "validation_details": {
+          "name": "validation_details",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {
+        "invoice_contract_validation_tbl_fk_invoice_Id_invoice_tbl_id_fk": {
+          "name": "invoice_contract_validation_tbl_fk_invoice_Id_invoice_tbl_id_fk",
+          "tableFrom": "invoice_contract_validation_tbl",
+          "tableTo": "invoice_tbl",
+          "schemaTo": "ai_db_schema",
+          "columnsFrom": [
+            "fk_invoice_Id"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {},
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    },
+    "ai_db_schema.invoice_tbl": {
+      "name": "invoice_tbl",
+      "schema": "ai_db_schema",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "char(36)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "ocr_id": {
+          "name": "ocr_id",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "invoice_type": {
+          "name": "invoice_type",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "invoice_number": {
+          "name": "invoice_number",
+          "type": "varchar(255)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "invoice_date": {
+          "name": "invoice_date",
+          "type": "date",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vendor_name": {
+          "name": "vendor_name",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vendor_tin": {
+          "name": "vendor_tin",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "customer_name": {
+          "name": "customer_name",
+          "type": "varchar(500)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "customer_tin": {
+          "name": "customer_tin",
+          "type": "varchar(100)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "total_amount": {
+          "name": "total_amount",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "currency": {
+          "name": "currency",
+          "type": "varchar(10)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "vat_amount": {
+          "name": "vat_amount",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "signature_present": {
+          "name": "signature_present",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "bir_atp": {
+          "name": "bir_atp",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "attachment_validation_status": {
+          "name": "attachment_validation_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "bir_validation_status": {
+          "name": "bir_validation_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "amount_validation_status": {
+          "name": "amount_validation_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "contract_validation_status": {
+          "name": "contract_validation_status",
+          "type": "varchar(50)",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "'pending'"
+        },
+        "parsed_data": {
+          "name": "parsed_data",
+          "type": "json",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "created_at": {
+          "name": "created_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        },
+        "updated_at": {
+          "name": "updated_at",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": false,
+          "default": "now()"
+        }
+      },
+      "indexes": {},
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {
+        "invoice_tbl_ocr_id_unique": {
+          "name": "invoice_tbl_ocr_id_unique",
+          "nullsNotDistinct": false,
+          "columns": [
+            "ocr_id"
+          ]
+        }
+      },
+      "policies": {},
+      "checkConstraints": {},
+      "isRLSEnabled": false
+    }
+  },
+  "enums": {},
+  "schemas": {
+    "ai_db_schema": "ai_db_schema"
+  },
+  "sequences": {},
+  "roles": {},
+  "policies": {},
+  "views": {},
+  "_meta": {
+    "columns": {},
+    "schemas": {},
+    "tables": {}
+  }
+}
