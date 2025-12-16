@@ -11,6 +11,39 @@ import { eq } from 'drizzle-orm';
 export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
   server:{
     handlers:{
+        GET: async({params}) => {
+            try{
+                const id = params.invoiceNo
+                const data = await getInvoice([
+                    eq(invoice_tbl.id, id)
+                ])
+
+                if(!data) return json({
+                    success:false,
+                    message: 'Invoice not foud!'
+                },
+                {
+                    status: 400
+                });
+
+                return json({
+                    success:true,
+                    data
+                })
+
+
+            }
+            catch(error:any){
+                console.log(error)
+                return json({
+                    success:false,
+                    message: error.message
+                },
+                {
+                    status:500
+                })
+            }
+        },
         POST: async ({request})=>{
             try{
                 

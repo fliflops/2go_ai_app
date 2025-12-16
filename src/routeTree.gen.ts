@@ -10,11 +10,12 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as DocumentsInvoicesRouteImport } from './routes/documents/invoices'
 import { Route as DocumentUploadInvoiceRouteImport } from './routes/document-upload/invoice'
 import { Route as DocumentUploadContractRouteImport } from './routes/document-upload/contract'
 import { Route as AiChatRouteImport } from './routes/ai/chat'
+import { Route as DocumentsInvoicesIndexRouteImport } from './routes/documents/invoices/index'
 import { Route as ApiInvoiceIndexRouteImport } from './routes/api/invoice/index'
+import { Route as DocumentsInvoicesIdRouteImport } from './routes/documents/invoices/$id'
 import { Route as ApiInvoiceDoc_idRouteImport } from './routes/api/invoice/$doc_id'
 import { Route as ApiDocumentUploadInvoiceRouteImport } from './routes/api/document-upload/invoice'
 import { Route as ApiDocumentUploadContractRouteImport } from './routes/api/document-upload/contract'
@@ -24,11 +25,6 @@ import { Route as ApiAiInvoiceInvoiceNoRouteImport } from './routes/api/ai/invoi
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DocumentsInvoicesRoute = DocumentsInvoicesRouteImport.update({
-  id: '/documents/invoices',
-  path: '/documents/invoices',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DocumentUploadInvoiceRoute = DocumentUploadInvoiceRouteImport.update({
@@ -46,9 +42,19 @@ const AiChatRoute = AiChatRouteImport.update({
   path: '/ai/chat',
   getParentRoute: () => rootRouteImport,
 } as any)
+const DocumentsInvoicesIndexRoute = DocumentsInvoicesIndexRouteImport.update({
+  id: '/documents/invoices/',
+  path: '/documents/invoices/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiInvoiceIndexRoute = ApiInvoiceIndexRouteImport.update({
   id: '/api/invoice/',
   path: '/api/invoice/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DocumentsInvoicesIdRoute = DocumentsInvoicesIdRouteImport.update({
+  id: '/documents/invoices/$id',
+  path: '/documents/invoices/$id',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ApiInvoiceDoc_idRoute = ApiInvoiceDoc_idRouteImport.update({
@@ -84,11 +90,12 @@ export interface FileRoutesByFullPath {
   '/ai/chat': typeof AiChatRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
-  '/documents/invoices': typeof DocumentsInvoicesRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
+  '/documents/invoices/$id': typeof DocumentsInvoicesIdRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
+  '/documents/invoices': typeof DocumentsInvoicesIndexRoute
   '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
   '/api/ai/invoice': typeof ApiAiInvoiceIndexRoute
 }
@@ -97,11 +104,12 @@ export interface FileRoutesByTo {
   '/ai/chat': typeof AiChatRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
-  '/documents/invoices': typeof DocumentsInvoicesRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
+  '/documents/invoices/$id': typeof DocumentsInvoicesIdRoute
   '/api/invoice': typeof ApiInvoiceIndexRoute
+  '/documents/invoices': typeof DocumentsInvoicesIndexRoute
   '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
   '/api/ai/invoice': typeof ApiAiInvoiceIndexRoute
 }
@@ -111,11 +119,12 @@ export interface FileRoutesById {
   '/ai/chat': typeof AiChatRoute
   '/document-upload/contract': typeof DocumentUploadContractRoute
   '/document-upload/invoice': typeof DocumentUploadInvoiceRoute
-  '/documents/invoices': typeof DocumentsInvoicesRoute
   '/api/document-upload/contract': typeof ApiDocumentUploadContractRoute
   '/api/document-upload/invoice': typeof ApiDocumentUploadInvoiceRoute
   '/api/invoice/$doc_id': typeof ApiInvoiceDoc_idRoute
+  '/documents/invoices/$id': typeof DocumentsInvoicesIdRoute
   '/api/invoice/': typeof ApiInvoiceIndexRoute
+  '/documents/invoices/': typeof DocumentsInvoicesIndexRoute
   '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
   '/api/ai/invoice/': typeof ApiAiInvoiceIndexRoute
 }
@@ -126,11 +135,12 @@ export interface FileRouteTypes {
     | '/ai/chat'
     | '/document-upload/contract'
     | '/document-upload/invoice'
-    | '/documents/invoices'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
     | '/api/invoice/$doc_id'
+    | '/documents/invoices/$id'
     | '/api/invoice'
+    | '/documents/invoices'
     | '/api/ai/invoice/$invoiceNo'
     | '/api/ai/invoice'
   fileRoutesByTo: FileRoutesByTo
@@ -139,11 +149,12 @@ export interface FileRouteTypes {
     | '/ai/chat'
     | '/document-upload/contract'
     | '/document-upload/invoice'
-    | '/documents/invoices'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
     | '/api/invoice/$doc_id'
+    | '/documents/invoices/$id'
     | '/api/invoice'
+    | '/documents/invoices'
     | '/api/ai/invoice/$invoiceNo'
     | '/api/ai/invoice'
   id:
@@ -152,11 +163,12 @@ export interface FileRouteTypes {
     | '/ai/chat'
     | '/document-upload/contract'
     | '/document-upload/invoice'
-    | '/documents/invoices'
     | '/api/document-upload/contract'
     | '/api/document-upload/invoice'
     | '/api/invoice/$doc_id'
+    | '/documents/invoices/$id'
     | '/api/invoice/'
+    | '/documents/invoices/'
     | '/api/ai/invoice/$invoiceNo'
     | '/api/ai/invoice/'
   fileRoutesById: FileRoutesById
@@ -166,11 +178,12 @@ export interface RootRouteChildren {
   AiChatRoute: typeof AiChatRoute
   DocumentUploadContractRoute: typeof DocumentUploadContractRoute
   DocumentUploadInvoiceRoute: typeof DocumentUploadInvoiceRoute
-  DocumentsInvoicesRoute: typeof DocumentsInvoicesRoute
   ApiDocumentUploadContractRoute: typeof ApiDocumentUploadContractRoute
   ApiDocumentUploadInvoiceRoute: typeof ApiDocumentUploadInvoiceRoute
   ApiInvoiceDoc_idRoute: typeof ApiInvoiceDoc_idRoute
+  DocumentsInvoicesIdRoute: typeof DocumentsInvoicesIdRoute
   ApiInvoiceIndexRoute: typeof ApiInvoiceIndexRoute
+  DocumentsInvoicesIndexRoute: typeof DocumentsInvoicesIndexRoute
   ApiAiInvoiceInvoiceNoRoute: typeof ApiAiInvoiceInvoiceNoRoute
   ApiAiInvoiceIndexRoute: typeof ApiAiInvoiceIndexRoute
 }
@@ -182,13 +195,6 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/documents/invoices': {
-      id: '/documents/invoices'
-      path: '/documents/invoices'
-      fullPath: '/documents/invoices'
-      preLoaderRoute: typeof DocumentsInvoicesRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/document-upload/invoice': {
@@ -212,11 +218,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AiChatRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/documents/invoices/': {
+      id: '/documents/invoices/'
+      path: '/documents/invoices'
+      fullPath: '/documents/invoices'
+      preLoaderRoute: typeof DocumentsInvoicesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/invoice/': {
       id: '/api/invoice/'
       path: '/api/invoice'
       fullPath: '/api/invoice'
       preLoaderRoute: typeof ApiInvoiceIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/documents/invoices/$id': {
+      id: '/documents/invoices/$id'
+      path: '/documents/invoices/$id'
+      fullPath: '/documents/invoices/$id'
+      preLoaderRoute: typeof DocumentsInvoicesIdRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/api/invoice/$doc_id': {
@@ -262,11 +282,12 @@ const rootRouteChildren: RootRouteChildren = {
   AiChatRoute: AiChatRoute,
   DocumentUploadContractRoute: DocumentUploadContractRoute,
   DocumentUploadInvoiceRoute: DocumentUploadInvoiceRoute,
-  DocumentsInvoicesRoute: DocumentsInvoicesRoute,
   ApiDocumentUploadContractRoute: ApiDocumentUploadContractRoute,
   ApiDocumentUploadInvoiceRoute: ApiDocumentUploadInvoiceRoute,
   ApiInvoiceDoc_idRoute: ApiInvoiceDoc_idRoute,
+  DocumentsInvoicesIdRoute: DocumentsInvoicesIdRoute,
   ApiInvoiceIndexRoute: ApiInvoiceIndexRoute,
+  DocumentsInvoicesIndexRoute: DocumentsInvoicesIndexRoute,
   ApiAiInvoiceInvoiceNoRoute: ApiAiInvoiceInvoiceNoRoute,
   ApiAiInvoiceIndexRoute: ApiAiInvoiceIndexRoute,
 }
