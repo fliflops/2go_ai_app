@@ -70,7 +70,7 @@ const InvoiceDialog = (props:invoiceDialog) => {
                     <DialogTitle>Invoice Validation</DialogTitle>
                     <DialogDescription>Validation Details</DialogDescription>
                 </DialogHeader>
-                {isPending ? <>Loading...</> : null}
+                {/* {isPending ? <>Loading...</> : null} */}
                 <ScrollArea>
                     {isError && (
                         <div className="bg-red-50 border border-red-200 rounded-lg p-4">
@@ -97,6 +97,7 @@ const InvoiceDialog = (props:invoiceDialog) => {
                     </div>
                     <div className='mt-10 flex'>
                         <JsonViewer
+                            isLoading={isPending}
                             className='w-full'
                             data={invoiceState?.parseData}
                         />
