@@ -1,5 +1,4 @@
 import Table from "@/components/table/Table"
-import useInvoiceStore from "@/lib/stores/invoice.store";
 import { ColumnDef } from "@tanstack/react-table"
 
 

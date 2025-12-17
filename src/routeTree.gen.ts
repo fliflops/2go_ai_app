@@ -20,6 +20,7 @@ import { Route as ApiInvoiceDoc_idRouteImport } from './routes/api/invoice/$doc_
 import { Route as ApiDocumentUploadInvoiceRouteImport } from './routes/api/document-upload/invoice'
 import { Route as ApiDocumentUploadContractRouteImport } from './routes/api/document-upload/contract'
 import { Route as ApiAiInvoiceIndexRouteImport } from './routes/api/ai/invoice/index'
+import { Route as ApiInvoicePdfDocIdRouteImport } from './routes/api/invoice/pdf.$docId'
 import { Route as ApiAiInvoiceInvoiceNoRouteImport } from './routes/api/ai/invoice/$invoiceNo'
 
 const IndexRoute = IndexRouteImport.update({
@@ -79,6 +80,11 @@ const ApiAiInvoiceIndexRoute = ApiAiInvoiceIndexRouteImport.update({
   path: '/api/ai/invoice/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiInvoicePdfDocIdRoute = ApiInvoicePdfDocIdRouteImport.update({
+  id: '/api/invoice/pdf/$docId',
+  path: '/api/invoice/pdf/$docId',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const ApiAiInvoiceInvoiceNoRoute = ApiAiInvoiceInvoiceNoRouteImport.update({
   id: '/api/ai/invoice/$invoiceNo',
   path: '/api/ai/invoice/$invoiceNo',
@@ -97,6 +103,7 @@ export interface FileRoutesByFullPath {
   '/api/invoice': typeof ApiInvoiceIndexRoute
   '/documents/invoices': typeof DocumentsInvoicesIndexRoute
   '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
+  '/api/invoice/pdf/$docId': typeof ApiInvoicePdfDocIdRoute
   '/api/ai/invoice': typeof ApiAiInvoiceIndexRoute
 }
 export interface FileRoutesByTo {
@@ -111,6 +118,7 @@ export interface FileRoutesByTo {
   '/api/invoice': typeof ApiInvoiceIndexRoute
   '/documents/invoices': typeof DocumentsInvoicesIndexRoute
   '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
+  '/api/invoice/pdf/$docId': typeof ApiInvoicePdfDocIdRoute
   '/api/ai/invoice': typeof ApiAiInvoiceIndexRoute
 }
 export interface FileRoutesById {
@@ -126,6 +134,7 @@ export interface FileRoutesById {
   '/api/invoice/': typeof ApiInvoiceIndexRoute
   '/documents/invoices/': typeof DocumentsInvoicesIndexRoute
   '/api/ai/invoice/$invoiceNo': typeof ApiAiInvoiceInvoiceNoRoute
+  '/api/invoice/pdf/$docId': typeof ApiInvoicePdfDocIdRoute
   '/api/ai/invoice/': typeof ApiAiInvoiceIndexRoute
 }
 export interface FileRouteTypes {
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/api/invoice'
     | '/documents/invoices'
     | '/api/ai/invoice/$invoiceNo'
+    | '/api/invoice/pdf/$docId'
     | '/api/ai/invoice'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -156,6 +166,7 @@ export interface FileRouteTypes {
     | '/api/invoice'
     | '/documents/invoices'
     | '/api/ai/invoice/$invoiceNo'
+    | '/api/invoice/pdf/$docId'
     | '/api/ai/invoice'
   id:
     | '__root__'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '/api/invoice/'
     | '/documents/invoices/'
     | '/api/ai/invoice/$invoiceNo'
+    | '/api/invoice/pdf/$docId'
     | '/api/ai/invoice/'
   fileRoutesById: FileRoutesById
 }
@@ -185,6 +197,7 @@ export interface RootRouteChildren {
   ApiInvoiceIndexRoute: typeof ApiInvoiceIndexRoute
   DocumentsInvoicesIndexRoute: typeof DocumentsInvoicesIndexRoute
   ApiAiInvoiceInvoiceNoRoute: typeof ApiAiInvoiceInvoiceNoRoute
+  ApiInvoicePdfDocIdRoute: typeof ApiInvoicePdfDocIdRoute
   ApiAiInvoiceIndexRoute: typeof ApiAiInvoiceIndexRoute
 }
 
@@ -267,6 +280,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ApiAiInvoiceIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/api/invoice/pdf/$docId': {
+      id: '/api/invoice/pdf/$docId'
+      path: '/api/invoice/pdf/$docId'
+      fullPath: '/api/invoice/pdf/$docId'
+      preLoaderRoute: typeof ApiInvoicePdfDocIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/api/ai/invoice/$invoiceNo': {
       id: '/api/ai/invoice/$invoiceNo'
       path: '/api/ai/invoice/$invoiceNo'
@@ -289,6 +309,7 @@ const rootRouteChildren: RootRouteChildren = {
   ApiInvoiceIndexRoute: ApiInvoiceIndexRoute,
   DocumentsInvoicesIndexRoute: DocumentsInvoicesIndexRoute,
   ApiAiInvoiceInvoiceNoRoute: ApiAiInvoiceInvoiceNoRoute,
+  ApiInvoicePdfDocIdRoute: ApiInvoicePdfDocIdRoute,
   ApiAiInvoiceIndexRoute: ApiAiInvoiceIndexRoute,
 }
 export const routeTree = rootRouteImport

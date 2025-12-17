@@ -141,3 +141,21 @@ export async function pollUntilCondition({
 
   throw new Error(`Polling failed after ${maxAttempts} attempts.`);
 }
+
+export const getPDF = async(doc_id: string) => {
+    try{
+        const response = await api.get(`/api/documents/${doc_id}/download/`,{
+            responseType: 'arraybuffer'
+        })
+
+        return response.data
+
+    }
+    catch(error: any) {
+        const errorMessage = axios.isAxiosError(error)  ? error.response?.data?.detail || error.message
+        : 'Failed to fetch PDF';
+        console.error(errorMessage)
+        throw new Error(errorMessage)
+    }
+    
+}

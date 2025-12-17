@@ -5,6 +5,9 @@ import { Button } from '@/components/ui/button';
 import InvoiceLabel from '../-components/invoice.label';
 import InvoiceDetailTable from '../-components/tables/invoice.details.table';
 import { JsonViewer } from '@/components/JsonViewer';
+import { Loader2 } from 'lucide-react';
+import PDFViewer from '@/components/PDFViewer';
+import InvoicePDFViewer from '../-components/invoice.pdf';
 
 export const Route = createFileRoute('/documents/invoices/$id')({
   component: RouteComponent,
@@ -97,7 +100,17 @@ function RouteComponent() {
 	</div>
 
 	return(
-		<div className='container mx-auto py-10'>
+		<div className='container mx-auto py-10'>	
+			{validateMutation.isPending ? 
+				<div className={`h-full w-full absolute bg-white opacity-75 z-10`}>
+				<div className='flex flex-col h-full justify-center items-center'>
+					<span className='flex gap-2'> 
+						<p>Validating</p>
+						<Loader2 className="h-5 w-5 animate-spin" />
+					</span>
+					</div>
+				</div> : null
+			}	
 			<div className='flex justify-between'>
 				<div className='flex-1 flex-col'>
 					<h1 className="text-3xl font-bold tracking-tight">Invoice Validation</h1>
@@ -110,6 +123,7 @@ function RouteComponent() {
 			</div>
 			
 			<div className='mt-5 flex flex-col gap-2'>
+					
 				<div className='grid grid-cols-5'>
 					<Label>{invoiceState.data.invoiceNumber}</Label>
 					<Label>Documents: <p className='text-muted-foreground'>{invoiceState?.data.amountValidationStatus}</p></Label>
@@ -144,11 +158,14 @@ function RouteComponent() {
 					}
 				</div>
 
+				<InvoicePDFViewer ocrId={invoiceState.data.ocr_id}/>
+
 				<JsonViewer
 					isLoading={validateMutation.isPending}
 					className='w-full'
 					data={invoiceState.data.parsedData}
 				/>
+				
 			</div>
 		</div>
   	)
