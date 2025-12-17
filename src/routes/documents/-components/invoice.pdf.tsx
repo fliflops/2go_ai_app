@@ -19,7 +19,10 @@ const InvoicePDFViewer = (props:pdfViewer) => {
             if(!response.ok) throw new Error('Failed loading pdf file.')
 
             return response.arrayBuffer()
-        }
+        },
+        staleTime: 1000 * 60 * 2, // 2 minutes
+        gcTime: 1000 * 60 * 5, // 5 minutes
+
     })
 
     React.useEffect(() => {
@@ -37,13 +40,13 @@ const InvoicePDFViewer = (props:pdfViewer) => {
 
     return (
         <div className='border p-2'>
-            {isLoading && isError ? 'Loading PDF Document...' :  
-                <PDFViewer 
-                    pdfData={pdfData || null} 
+            <PDFViewer 
+                    pdfData={isLoading ? null : pdfData || null} 
+                    
+                    initialScale={1}
                     title='Invoice Document'
-                    onError={(error) => console.error(error)}
+                    //onError={(error) => console.error(error)}
                 />
-            }
         </div>
         
     )

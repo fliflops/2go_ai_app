@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import InvoiceLabel from '../-components/invoice.label';
 import InvoiceDetailTable from '../-components/tables/invoice.details.table';
 import { JsonViewer } from '@/components/JsonViewer';
-import { Loader2 } from 'lucide-react';
+import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
 import PDFViewer from '@/components/PDFViewer';
 import InvoicePDFViewer from '../-components/invoice.pdf';
 
@@ -58,8 +58,8 @@ function RouteComponent() {
 
     const onValidate = async () => {
         validateMutation.mutate({
-            invoice_no: invoiceState?.invoice_no as string,
-            id: invoiceState?.id as string
+            invoice_no: invoiceState?.data.invoiceNumber as string,
+            id: invoiceState?.data.id as string
         })
     }
 
@@ -121,7 +121,41 @@ function RouteComponent() {
 					<Button disabled={validateMutation.isPending} onClick={onValidate}>Validate</Button>
 				</div>
 			</div>
-			
+
+			{validateMutation.isError && (
+				<div className="bg-red-50 border border-red-200 rounded-lg p-4">
+				<div className="flex items-center gap-3">
+					<AlertCircle className="h-5 w-5 text-red-500" />
+					<div>
+					<p className="text-sm font-semibold text-red-800">
+						Upload failed
+					</p>
+					<p className="text-xs text-red-600 mt-0.5">
+						{validateMutation.error.message}
+					</p>
+					</div>
+				</div>
+				</div>
+			)}
+
+			 {validateMutation.isSuccess && (
+				<div className="bg-green-50 border border-green-200 rounded-lg p-4">
+				<div className="flex items-center gap-3">
+					<div className="bg-green-500 rounded-full p-1">
+					<CheckCircle2 className="h-5 w-5 text-white" />
+					</div>
+					<div>
+					<p className="text-sm font-semibold text-green-800">
+						Upload successful!
+					</p>
+					<p className="text-xs text-green-600 mt-0.5">
+						Your files have been uploaded successfully
+					</p>
+					</div>
+				</div>
+				</div>
+			)}
+					
 			<div className='mt-5 flex flex-col gap-2'>
 					
 				<div className='grid grid-cols-5'>

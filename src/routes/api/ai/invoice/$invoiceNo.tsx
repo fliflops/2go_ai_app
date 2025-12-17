@@ -88,9 +88,9 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
                         }
                     });
 
-                    if (!documentValidationResult.isValid){
-                        return;
-                    }
+                    // if (!documentValidationResult.isValid){
+                    //     return;
+                    // }
 
                     const birComplianceResult = await validateBIRCompliance(
                         invoice.parsedData,
@@ -106,9 +106,9 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
                         }
                     });
 
-                    if (!documentValidationResult.isValid){
-                        return;
-                    }
+                    // if (!documentValidationResult.isValid){
+                    //     return;
+                    // }
                     
                 //     const paperlessDoc = await getDocument(String(invoice.ocr_id));
                 //     const openAiPrompt = invoiceExtractionPrompt(paperlessDoc.content);
@@ -138,7 +138,13 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
                     })
 
                     const aiOutput = formatTextToJson(chatResponse.answer)
-                    if(!aiOutput) throw new Error('Prompt Failed!');
+                    if(!aiOutput) return json({
+                            success:false,
+                            message: 'AI Process Failed'
+                        },
+                        {
+                            status: 400
+                        });
 
                     parsedData = {
                         ...parsedData,

@@ -117,6 +117,9 @@ const PDFViewer: React.FC<PDFViewerProps> = ({
         pdfDocRef.current = pdf;
         setTotalPages(pdf.numPages);
         setCurrentPage(1);
+        
+        // Render the first page immediately after loading
+        await renderPage(1, pdf);
       } catch (err) {
         const errorMessage = err instanceof Error ? err.message : 'Unknown error';
         onError?.('Failed to load PDF: ' + errorMessage);
@@ -129,12 +132,13 @@ const PDFViewer: React.FC<PDFViewerProps> = ({
   }, [pdfData, onError]);
 
   // Render PDF page to canvas
-  const renderPage = async (pageNum: number): Promise<void> => {
-    if (!pdfDocRef.current || !canvasRef.current) return;
+  const renderPage = async (pageNum: number, pdf?: PDFDocument): Promise<void> => {
+    const pdfDoc = pdf || pdfDocRef.current;
+    if (!pdfDoc || !canvasRef.current) return;
     
     setLoading(true);
     try {
-      const page = await pdfDocRef.current.getPage(pageNum);
+      const page = await pdfDoc.getPage(pageNum);
       const viewport = page.getViewport({ scale });
       
       const canvas = canvasRef.current;
@@ -164,8 +168,9 @@ const PDFViewer: React.FC<PDFViewerProps> = ({
   // Re-render when page or scale changes
   useEffect(() => {
     if (pdfDocRef.current && currentPage) {
-      renderPage(currentPage);
+      void renderPage(currentPage);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [currentPage, scale]);
 
   const handlePrevPage = (): void => {
@@ -190,6 +195,13 @@ const PDFViewer: React.FC<PDFViewerProps> = ({
       setCurrentPage(page);
     }
   };
+
+  // const goToPage = (page: number): void => {
+  //   if (pdfDocRef.current && page >= 1 && page <= totalPages) {
+  //     setCurrentPage(page);
+  //     void renderPage(page);
+  //   }
+  // };
 
   if (!pdfData) {
     return (
@@ -253,7 +265,7 @@ const PDFViewer: React.FC<PDFViewerProps> = ({
           >
             <ZoomOut className="w-5 h-5" />
           </button>
-          <span className="text-sm min-w-12 text-center">{Math.round(scale * 100)}%</span>
+          <span className="text-sm min-w-[3rem] text-center">{Math.round(scale * 100)}%</span>
           <button
             onClick={handleZoomIn}
             disabled={loading || scale >= maxScale}
