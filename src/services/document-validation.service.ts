@@ -56,13 +56,30 @@ const InvoiceDataSchema = z.object({
   })),
   subtotal: z.number().nullable(),
   vatable_sales: z.number().nullable(),
+
+  vat_exempt_sales: z.number().nullable(),
+  zero_rated_sales: z.number().nullable(),
+  percentage_tax_sales: z.number().nullable(),
+
   net_amount: z.number().nullable(),
   vat_amount: z.number().nullable(),
   currency: z.string().nullable(),
   invoice_type: z.string().nullable(),
   vat_status: z.string().nullable(),
+
+  has_invoice_word: z.boolean(),
+  has_serial_number: z.boolean(),
+  has_qty_unit_desc: z.boolean(),
+  has_vat_label: z.boolean(),
+  has_exempt_label: z.boolean(),
+  has_sales_breakdown: z.boolean(),
+  document_control_type: z.string().nullable(),
+  document_control_number: z.string().nullable(),
+  document_control_date: z.string().nullable(),
   signature_present: z.boolean(),
-  bir_atp: z.boolean()
+  form_2307_attached: z.boolean(),
+  form_2307_consistent: z.boolean().nullable(),
+  rag_validation: z.object({}).catchall(z.unknown()).optional(),
 })
 
 export type InvoiceData = z.infer<typeof InvoiceDataSchema>
@@ -76,13 +93,13 @@ export const VALIDATION_RULE_SETS: Record<string, ValidationRuleSet> = {
       {
         field: 'form_2307_attached',
         required: true,
-        validator: (value: string | null) => value !== null && value.trim().length > 0,
+        validator: (value: boolean) => value === true,
         errorMessage: 'BIR Form 2307 is required'
       },
       {
         field: 'form_2307_consistent',
         required: true,
-        validator: (value: string | null) => value !== null && value.trim().length > 0,
+        validator: (value: boolean) => value === true,
         errorMessage: 'BIR Form 2307 contents must be aligned with invoice data.'
       }
     ]
@@ -207,7 +224,7 @@ export const VALIDATION_RULE_SETS: Record<string, ValidationRuleSet> = {
  */
 export async function validateInvoiceData(
   invoiceData: any,
-  ruleSetName: string = 'demo_invoice'
+  ruleSetName: string = 'bir_invoice'
 ): Promise<ValidationResult> {
   try {
     // Validate input schema
@@ -217,7 +234,7 @@ export async function validateInvoiceData(
     let ruleSet = VALIDATION_RULE_SETS[ruleSetName]
     
     // Try to get from configuration service (future integration)
-    try {
+    /*try {
       const { getValidationConfig, configToRuleSet } = await import('./validation-config.service')
       const config = await getValidationConfig(ruleSetName)
       if (config) {
@@ -231,6 +248,7 @@ export async function validateInvoiceData(
     if (!ruleSet) {
       throw new Error(`Unknown validation rule set: ${ruleSetName}`)
     }
+    */
 
     const errors: ValidationError[] = []
     const warnings: ValidationWarning[] = []

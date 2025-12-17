@@ -2,10 +2,12 @@ import { contractValidationPrompt, sendMessage } from '@/services/paperlessai.se
 import { createFileRoute } from '@tanstack/react-router';
 import { json } from '@tanstack/react-start';
 import { formatTextToJson } from '@/utils/textFormatter';
-import { getInvoice, updateInvoice } from '@/services/invoice.service';
+import { getInvoice, updateInvoice, updateInvoiceById } from '@/services/invoice.service';
 //import { getDocument } from '@/services/paperless.service';
 import { invoice_tbl, InvoiceParams } from '@/db/ai_db_schema/schema';
 import { eq } from 'drizzle-orm';
+import { InvoiceData, validateInvoiceData } from '@/services/document-validation.service';
+import { validateBIRCompliance } from '@/services/bir-compliance.service';
 //import { chatResponse, invoiceExtractionPrompt } from '@/services/openai.service';
 
 export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
@@ -32,14 +34,48 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
                 let parsedData:any = invoice.parsedData;
 
                 let validationStatus = {
-                    // attachmentValidationStatus: invoice.attachmentValidationStatus,
-                    // birValidationStatus: invoice.birValidationStatus,
+                    attachmentValidationStatus: invoice.attachmentValidationStatus,
+                    birValidationStatus: invoice.birValidationStatus,
                     contractValidationStatus: invoice.contractValidationStatus,
                     amountValidationStatus: invoice.amountValidationStatus   
                 }
 
+                if(statusForValidation.includes(invoice.attachmentValidationStatus as string) || statusForValidation.includes(invoice.birValidationStatus as string)){
+                    const documentValidationResult = await validateInvoiceData(
+                        invoice.parsedData,
+                        'bir_invoice'
+                    );
 
-                // if(statusForValidation.includes(invoice.attachmentValidationStatus as string) || statusForValidation.includes(invoice.birValidationStatus as string)){
+                    const documentValidationStatus = documentValidationResult.isValid ? 'success' : 'failed';
+
+                    await updateInvoiceById({
+                        id,
+                        data: {
+                            attachmentValidationStatus: documentValidationStatus
+                        }
+                    });
+
+                    if (!documentValidationResult.isValid){
+                        return;
+                    }
+
+                    const birComplianceResult = await validateBIRCompliance(
+                        invoice.parsedData,
+                        'official_bir_compliance'
+                    );
+
+                    const birComplianceStatus = birComplianceResult.isCompliant ? 'success' : 'failed';
+
+                    await updateInvoiceById({
+                        id,
+                        data: {
+                            birValidationStatus: birComplianceStatus
+                        }
+                    });
+
+                    if (!documentValidationResult.isValid){
+                        return;
+                    }
                     
                 //     const paperlessDoc = await getDocument(String(invoice.ocr_id));
                 //     const openAiPrompt = invoiceExtractionPrompt(paperlessDoc.content);
@@ -59,7 +95,7 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
                 //         attachmentValidationStatus: 'pending',
                 //         birValidationStatus: 'pending'  
                 //     }
-                // }
+                }
 
 
                 if(statusForValidation.includes(invoice.contractValidationStatus as string) || statusForValidation.includes(invoice.amountValidationStatus as string)){

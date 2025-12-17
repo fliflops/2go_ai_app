@@ -108,3 +108,23 @@ export const updateInvoice = async (params:{where:{
     })
     .where(eq(invoice_tbl.id, where.id))
 } 
+
+export const updateInvoiceById = async <
+  T extends Partial<typeof invoice_tbl.$inferInsert>
+>(params: {
+  id: string;
+  data: T;
+}) => {
+  const { id, data } = params;
+
+  if (Object.keys(data).length === 0) {
+    throw new Error('No fields provided for update');
+  }
+
+  const result = await db
+    .update(invoice_tbl)
+    .set(data)
+    .where(eq(invoice_tbl.id, id));
+
+  return result.rowCount;
+};

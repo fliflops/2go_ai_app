@@ -59,56 +59,49 @@ export interface FieldCompletenessReport {
 
 // Invoice data schema for BIR compliance validation (Official BIR Requirements)
 const BIRInvoiceDataSchema = z.object({
-  // General Requirements (Mandatory)
-  seller_registered_name: z.string().nullable(), // As per BIR Certificate of Registration
-  seller_tin: z.string().nullable(), // TIN with Branch Code
-  seller_address: z.string().nullable(), // Registered Business Address
-  invoice_word_present: z.boolean().optional(), // "Invoice" or "Billing Invoice" clearly printed
-  transaction_date: z.string().nullable(), // Date of Transaction
-  buyer_registered_name: z.string().nullable(), // Buyer's Registered Name
-  buyer_address: z.string().nullable(), // Buyer's Address
-  buyer_tin: z.string().nullable(), // Buyer's TIN
-  serial_number: z.string().nullable(), // Unique, sequential, printed clearly
-  total_amount: z.number().nullable(), // Total Amount of Sale (gross amount)
-  
-  // Line Items (Mandatory)
+  invoice_number: z.string().nullable(),
+  invoice_date: z.string().nullable(),
+  vendor_name: z.string().nullable(),
+  vendor_address: z.string().nullable(),
+  vendor_tin: z.string().nullable(),
+  vendor_business_style: z.string().nullable(),
+  customer_name: z.string().nullable(),
+  customer_address: z.string().nullable(),
+  customer_tin: z.string().nullable(),
+  total_amount: z.number().nullable(),
+  due_date: z.string().nullable(),
   line_items: z.array(z.object({
-    quantity: z.number(), // Quantity of goods/services
-    unit_cost: z.number(), // Unit Cost
-    description: z.string(), // Description/Nature of Goods or Services
-    line_total: z.number() // Calculated total
-  })).nullable(),
-  
-  // Document Control Info (Mandatory - either manual or system-generated)
-  document_control_type: z.enum(['manual', 'system']).nullable(), // ATP/OCN or PTU/ACCN
-  atp_ocn_number: z.string().nullable().optional(), // For manual invoices
-  ptu_accn_number: z.string().nullable().optional(), // For system-generated invoices
-  
-  // VAT Registration Status (Must be one or the other, never both)
-  vat_registration_status: z.enum(['vat_registered', 'non_vat_registered']).nullable(),
-  
-  // VAT-Registered Invoice Fields (only if vat_registered)
-  vat_exempt_statement: z.boolean().optional(), // Must state "EXEMPT" on face
-  sales_subject_to_percentage_tax: z.number().nullable().optional(), // SSPT
-  exempt_sales: z.number().nullable().optional(), // Exempt Sales
-  
-  // Non-VAT Registered Invoice Fields (only if non_vat_registered)
-  vatable_sales: z.number().nullable().optional(), // VATable Sales
-  vat_amount: z.number().nullable().optional(), // VAT Amount as separate line item
-  zero_rated_sales: z.number().nullable().optional(), // Zero-Rated Sales
-  vat_exempt_sales: z.number().nullable().optional(), // VAT-Exempt Sales
-  vat_exempt_indicator: z.boolean().optional(), // "VAT-Exempt Sale" indicator
-  zero_rated_indicator: z.boolean().optional(), // "Zero-Rated Sale" indicator
-  
-  // Legacy fields for backward compatibility
-  invoice_number: z.string().nullable().optional(),
-  invoice_date: z.string().nullable().optional(),
-  vendor_name: z.string().nullable().optional(),
-  vendor_address: z.string().nullable().optional(),
-  vendor_tin: z.string().nullable().optional(),
-  customer_name: z.string().nullable().optional(),
-  customer_address: z.string().nullable().optional(),
-  customer_tin: z.string().nullable().optional()
+    description: z.string(),
+    quantity: z.number(),
+    unit_price: z.number(),
+    line_total: z.number()
+  })),
+  subtotal: z.number().nullable(),
+  vatable_sales: z.number().nullable(),
+
+  vat_exempt_sales: z.number().nullable(),
+  zero_rated_sales: z.number().nullable(),
+  percentage_tax_sales: z.number().nullable(),
+
+  net_amount: z.number().nullable(),
+  vat_amount: z.number().nullable(),
+  currency: z.string().nullable(),
+  invoice_type: z.string().nullable(),
+  vat_status: z.string().nullable(),
+
+  has_invoice_word: z.boolean(),
+  has_serial_number: z.boolean(),
+  has_qty_unit_desc: z.boolean(),
+  has_vat_label: z.boolean(),
+  has_exempt_label: z.boolean(),
+  has_sales_breakdown: z.boolean(),
+  document_control_type: z.string().nullable(),
+  document_control_number: z.string().nullable(),
+  document_control_date: z.string().nullable(),
+  signature_present: z.boolean(),
+  form_2307_attached: z.boolean(),
+  form_2307_consistent: z.boolean().nullable(),
+  rag_validation: z.object({}).catchall(z.unknown()).optional(),
 })
 
 export type BIRInvoiceData = z.infer<typeof BIRInvoiceDataSchema>
@@ -122,41 +115,42 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
     rules: [
       // General Requirements (Mandatory)
       {
-        field: 'seller_registered_name',
+        field: 'vendor_name',
         required: true,
         validator: (value: string | null) => value !== null && value.trim().length > 0,
-        errorMessage: 'Seller\'s Registered Name (as per BIR Certificate of Registration) is required',
-        weight: 10
+        errorMessage: 'Vendor\'s Registered Name (as per BIR Certificate of Registration) is required',
+        weight: 15
       },
       {
-        field: 'seller_tin',
+        field: 'vendor_tin',
         required: true,
         validator: (value: string | null) => {
           if (!value) return false
           // TIN with Branch Code format validation (allow VAT/Non-VAT labels)
           const cleanTin = value.replace(/\s*\(.*?\)\s*/g, '').replace(/\s/g, '') // Remove labels and spaces
-          const tinPattern = /^(\d{3}-\d{3}-\d{3}-\d{3}|\d{9,12})$/
+          console.log("cleanTin: ", cleanTin);
+          const tinPattern = /^(\d{3}-\d{3}-\d{3}-\d{5}|\d{9,12})$/
           return tinPattern.test(cleanTin)
         },
-        errorMessage: 'Seller\'s TIN with Branch Code is required for BIR compliance',
+        errorMessage: 'Vendor\'s TIN with Branch Code is required for BIR compliance',
+        weight: 35
+      },
+      {
+        field: 'vendor_address',
+        required: true,
+        validator: (value: string | null) => value !== null && value.trim().length > 0,
+        errorMessage: 'Registered Business Address (vendor) is required',
         weight: 10
       },
       {
-        field: 'seller_address',
-        required: true,
-        validator: (value: string | null) => value !== null && value.trim().length > 0,
-        errorMessage: 'Registered Business Address (seller) is required',
-        weight: 8
-      },
-      {
-        field: 'invoice_word_present',
+        field: 'has_invoice_word',
         required: true,
         validator: (value: boolean) => value === true,
         errorMessage: 'Word "Invoice" or "Billing Invoice" must be printed/stamped clearly',
-        weight: 7
+        weight: 10
       },
       {
-        field: 'transaction_date',
+        field: 'invoice_date',
         required: true,
         validator: (value: string | null) => {
           if (!value) return false
@@ -167,21 +161,21 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
         weight: 9
       },
       {
-        field: 'buyer_registered_name',
+        field: 'customer_name',
         required: true,
         validator: (value: string | null) => value !== null && value.trim().length > 0,
-        errorMessage: 'Buyer\'s Registered Name is required',
+        errorMessage: 'Customer\'s Registered Name is required',
         weight: 8
       },
       {
-        field: 'buyer_address',
+        field: 'customer_address',
         required: true,
         validator: (value: string | null) => value !== null && value.trim().length > 0,
-        errorMessage: 'Buyer\'s Address is required',
+        errorMessage: 'Customer\'s Address is required',
         weight: 6
       },
       {
-        field: 'buyer_tin',
+        field: 'customer_tin',
         required: true,
         validator: (value: string | null) => {
           if (!value) return false
@@ -190,36 +184,36 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
           const tinPattern = /^(\d{3}-\d{3}-\d{3}-\d{3}|\d{9,12})$/
           return tinPattern.test(cleanTin)
         },
-        errorMessage: 'Buyer\'s TIN is required',
+        errorMessage: 'Customer\'s TIN is required',
         weight: 8
       },
       {
-        field: 'serial_number',
+        field: 'has_serial_number',
         required: true,
-        validator: (value: string | null) => value !== null && value.trim().length > 0,
+        validator: (value: boolean) => value === true,
         errorMessage: 'Serial Number (unique, sequential, and printed clearly) is required',
         weight: 9
       },
       {
-        field: 'total_amount',
+        field: 'subtotal',
         required: true,
         validator: (value: number | null) => value !== null && value > 0,
         errorMessage: 'Total Amount of Sale (gross amount) is required',
-        weight: 10
+        weight: 15
       },
       // Document Control Info (Mandatory)
       {
         field: 'document_control_type',
         required: true,
-        validator: (value: string | null) => value === 'manual' || value === 'system',
+        validator: (value: string | null) => value === 'ATP' || value === 'OCN' || value === 'PTU' || value === 'ACCN',
         errorMessage: 'Document Control Info (ATP/OCN for manual, PTU/ACCN for system-generated) is required',
         weight: 10
       },
       // VAT Registration Status (Must be specified)
       {
-        field: 'vat_registration_status',
+        field: 'has_vat_label',
         required: true,
-        validator: (value: string | null) => value === 'vat_registered' || value === 'non_vat_registered',
+        validator: (value: boolean) => value === true,
         errorMessage: 'VAT Registration Status must be specified (VAT-registered or Non-VAT registered)',
         weight: 10
       }
@@ -232,14 +226,14 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
     rules: [
       // All general requirements plus VAT-specific requirements
       {
-        field: 'vat_registration_status',
+        field: 'has_vat_label',
         required: true,
         validator: (value: string | null) => value === 'vat_registered',
         errorMessage: 'Must be VAT-registered for this validation',
         weight: 10
       },
       {
-        field: 'vat_exempt_statement',
+        field: 'has_exempt_label',
         required: true,
         validator: (value: boolean) => value === true,
         errorMessage: 'Must state "EXEMPT" on the face of the invoice for VAT-registered businesses',
@@ -268,7 +262,7 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
     rules: [
       // All general requirements plus Non-VAT specific requirements
       {
-        field: 'vat_registration_status',
+        field: 'has_vat_label',
         required: true,
         validator: (value: string | null) => value === 'non_vat_registered',
         errorMessage: 'Must be Non-VAT registered for this validation',
@@ -329,7 +323,7 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
         weight: 10
       },
       {
-        field: 'buyer_tin',
+        field: 'customer_tin',
         required: true,
         validator: (value: string | null) => {
           if (!value) return false
@@ -349,7 +343,7 @@ export const BIR_COMPLIANCE_RULE_SETS: Record<string, BIRComplianceRuleSet> = {
  */
 export async function validateBIRCompliance(
   invoiceData: any,
-  ruleSetName: string = 'standard_bir_compliance'
+  ruleSetName: string = 'official_bir_compliance'
 ): Promise<BIRComplianceResult> {
   try {
     // Validate input schema
@@ -548,53 +542,51 @@ async function performBIRBusinessRuleValidations(data: BIRInvoiceData): Promise<
   const warnings: BIRComplianceWarning[] = []
 
   // Business Rule: Invoice must have General Requirements + VAT fields OR General Requirements + Non-VAT fields
-  if (data.vat_registration_status) {
-    if (data.vat_registration_status === 'vat_registered') {
-      // VAT-registered business validation
-      if (!data.vat_exempt_statement) {
-        errors.push({
-          field: 'vat_exempt_statement',
-          message: 'VAT-registered invoices must state "EXEMPT" on the face of the invoice',
-          severity: 'critical',
-          birRequirement: 'BIR requires EXEMPT statement for VAT-registered businesses'
-        })
-      }
-      
-      // Check for Non-VAT fields (should not be present)
-      if (data.vat_amount && data.vat_amount > 0) {
-        errors.push({
-          field: 'vat_amount',
-          message: 'VAT-registered invoices cannot show VAT amount as separate line item',
-          severity: 'critical',
-          birRequirement: 'Invoice cannot have both VAT & Non-VAT fields'
-        })
-      }
-    } else if (data.vat_registration_status === 'non_vat_registered') {
-      // Non-VAT registered business validation
-      if (!data.vat_amount && data.vat_amount !== 0) {
-        errors.push({
-          field: 'vat_amount',
-          message: 'Non-VAT registered invoices must show VAT amount as a separate line item',
-          severity: 'critical',
-          birRequirement: 'BIR requires VAT amount breakdown for Non-VAT registered businesses'
-        })
-      }
-      
-      // Check for VAT-registered fields (should not be present)
-      if (data.vat_exempt_statement) {
-        errors.push({
-          field: 'vat_exempt_statement',
-          message: 'Non-VAT registered invoices should not have EXEMPT statement',
-          severity: 'critical',
-          birRequirement: 'Invoice cannot have both VAT & Non-VAT fields'
-        })
-      }
+  if (data.has_vat_label) {
+    // VAT-registered business validation
+    // Check for VAT-registered fields (should not be present)
+    if (data.has_exempt_label) {
+      errors.push({
+        field: 'has_exempt_label',
+        message: 'VAT registered invoices should not have EXEMPT statement',
+        severity: 'critical',
+        birRequirement: 'Invoice cannot have both VAT & Non-VAT fields'
+      })
+    }
+
+    
+    if (!data.vat_amount && data.vat_amount !== 0) {
+      errors.push({
+        field: 'vat_amount',
+        message: 'VAT registered invoices must show VAT amount as a separate line item',
+        severity: 'critical',
+        birRequirement: 'BIR requires VAT amount breakdown for VAT registered businesses'
+      })
+    }
+  } else {
+    // Non-VAT registered business validation
+    if (data.vat_amount && data.vat_amount > 0) {
+      errors.push({
+        field: 'vat_amount',
+        message: 'Non-VAT registered invoices cannot show VAT amount as separate line item',
+        severity: 'critical',
+        birRequirement: 'Invoice cannot have both VAT & Non-VAT fields'
+      })
+    }
+
+    if (!data.has_exempt_label) {
+      errors.push({
+        field: 'has_exempt_label',
+        message: 'Non-VAT registered invoices must state "EXEMPT" on the face of the invoice',
+        severity: 'critical',
+        birRequirement: 'BIR requires EXEMPT statement for Non-VAT registered businesses'
+      })
     }
   }
 
   // Business Rule: Document Control is always required
   if (data.document_control_type === 'manual') {
-    if (!data.atp_ocn_number) {
+    if (!data.document_control_type) {
       errors.push({
         field: 'atp_ocn_number',
         message: 'Manual invoices must have ATP/OCN number',
@@ -603,7 +595,7 @@ async function performBIRBusinessRuleValidations(data: BIRInvoiceData): Promise<
       })
     }
   } else if (data.document_control_type === 'system') {
-    if (!data.ptu_accn_number) {
+    if (!data.document_control_type) {
       errors.push({
         field: 'ptu_accn_number',
         message: 'System-generated invoices must have PTU/ACCN number',
@@ -625,12 +617,13 @@ async function performBIRBusinessRuleValidations(data: BIRInvoiceData): Promise<
         })
       }
       
-      if (!item.unit_cost || item.unit_cost <= 0) {
+      // if (!item.unit_price || item.unit_price <= 0) {
+      if (!item.unit_price || item.unit_price === 0) {
         errors.push({
-          field: `line_items[${index}].unit_cost`,
-          message: `Line item ${index + 1}: Unit Cost is required and must be greater than 0`,
+          field: `line_items[${index}].unit_price`,
+          message: `Line item ${index + 1}: Unit price is required and must be greater than 0`,
           severity: 'critical',
-          birRequirement: 'BIR requires unit cost for all line items'
+          birRequirement: 'BIR requires unit price for all line items'
         })
       }
       
@@ -644,7 +637,8 @@ async function performBIRBusinessRuleValidations(data: BIRInvoiceData): Promise<
       }
       
       // Validate calculation
-      const expectedTotal = item.quantity * item.unit_cost
+      /*
+      const expectedTotal = item.quantity * item.unit_price
       if (Math.abs(item.line_total - expectedTotal) > 0.01) {
         warnings.push({
           field: `line_items[${index}].line_total`,
@@ -653,6 +647,7 @@ async function performBIRBusinessRuleValidations(data: BIRInvoiceData): Promise<
           birGuideline: 'Accurate calculations are required for BIR compliance'
         })
       }
+      */
     })
   } else {
     errors.push({
@@ -677,41 +672,42 @@ async function performBIRSpecificValidations(data: BIRInvoiceData): Promise<{
   const warnings: BIRComplianceWarning[] = []
 
   // TIN format validation (Seller)
-  if (data.seller_tin) {
-    const cleanTin = data.seller_tin.replace(/\s|-/g, '')
-    if (cleanTin.length < 9 || cleanTin.length > 12) {
+  if (data.vendor_tin) {
+    const cleanTin = data.vendor_tin.replace(/\s|-/g, '')
+    if (cleanTin.length < 9 || cleanTin.length > 14) {
       warnings.push({
-        field: 'seller_tin',
+        field: 'vendor_tin',
         message: 'Seller TIN length may not comply with BIR standards',
         suggestion: 'Verify TIN format with BIR guidelines',
         birGuideline: 'TIN should be 9-12 digits in XXX-XXX-XXX-XXX format with Branch Code'
       })
     }
-    
+    /*
     // Check for VAT/Non-VAT label requirement
-    if (data.vat_registration_status === 'vat_registered' && !data.seller_tin.includes('VAT')) {
+    if (data.has_vat_label === 'vat_registered' && !data.vendor_tin.includes('VAT')) {
       warnings.push({
-        field: 'seller_tin',
+        field: 'vendor_tin',
         message: 'VAT-registered seller should have VAT label with TIN',
         suggestion: 'Include VAT registration indicator with TIN',
         birGuideline: 'TIN should include VAT or Non-VAT label as applicable'
       })
-    } else if (data.vat_registration_status === 'non_vat_registered' && !data.seller_tin.includes('Non-VAT')) {
+    } else if (data.has_vat_label === 'non_vat_registered' && !data.vendor_tin.includes('Non-VAT')) {
       warnings.push({
-        field: 'seller_tin',
+        field: 'vendor_tin',
         message: 'Non-VAT registered seller should have Non-VAT label with TIN',
         suggestion: 'Include Non-VAT registration indicator with TIN',
         birGuideline: 'TIN should include VAT or Non-VAT label as applicable'
       })
     }
+    */
   }
 
   // TIN format validation (Buyer)
-  if (data.buyer_tin) {
-    const cleanTin = data.buyer_tin.replace(/\s|-/g, '')
+  if (data.customer_tin) {
+    const cleanTin = data.customer_tin.replace(/\s|-/g, '')
     if (cleanTin.length < 9 || cleanTin.length > 12) {
       warnings.push({
-        field: 'buyer_tin',
+        field: 'customer_tin',
         message: 'Buyer TIN length may not comply with BIR standards',
         suggestion: 'Verify TIN format with BIR guidelines',
         birGuideline: 'TIN should be 9-12 digits in XXX-XXX-XXX-XXX format'
@@ -720,22 +716,22 @@ async function performBIRSpecificValidations(data: BIRInvoiceData): Promise<{
   }
 
   // Date validation (Transaction Date)
-  if (data.transaction_date) {
-    const transactionDate = new Date(data.transaction_date)
+  if (data.invoice_date) {
+    const transactionDate = new Date(data.invoice_date)
     const today = new Date()
     const oneYearAgo = new Date()
     oneYearAgo.setFullYear(today.getFullYear() - 1)
     
     if (transactionDate > today) {
       errors.push({
-        field: 'transaction_date',
+        field: 'invoice_date',
         message: 'Transaction date cannot be in the future',
         severity: 'critical',
         birRequirement: 'BIR requires valid historical transaction dates'
       })
     } else if (transactionDate < oneYearAgo) {
       warnings.push({
-        field: 'transaction_date',
+        field: 'invoice_date',
         message: 'Transaction date is more than one year old',
         suggestion: 'Verify if this is a current transaction',
         birGuideline: 'Old invoices may require additional BIR documentation'
@@ -743,6 +739,7 @@ async function performBIRSpecificValidations(data: BIRInvoiceData): Promise<{
     }
   }
 
+  /*
   // Amount validation
   if (data.total_amount && data.total_amount > 1000000) {
     warnings.push({
@@ -767,7 +764,7 @@ async function performBIRSpecificValidations(data: BIRInvoiceData): Promise<{
   }
 
   // VAT calculation validation for Non-VAT registered
-  if (data.vat_registration_status === 'non_vat_registered' && data.vatable_sales && data.vat_amount) {
+  if (data.has_vat_label === 'non_vat_registered' && data.vatable_sales && data.vat_amount) {
     const expectedVat = Math.round(data.vatable_sales * 0.12 * 100) / 100
     const actualVat = data.vat_amount
     const tolerance = 1.0 // ₱1 tolerance
@@ -781,6 +778,7 @@ async function performBIRSpecificValidations(data: BIRInvoiceData): Promise<{
       })
     }
   }
+  */
 
   return { errors, warnings }
 }
