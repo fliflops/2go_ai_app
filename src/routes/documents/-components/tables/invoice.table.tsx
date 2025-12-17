@@ -7,10 +7,14 @@ import { Input } from '@/components/ui/input';
 import useDebounce from '@/hooks/use-debounce';
 import { Button } from '@/components/ui/button';
 import { useDisclosure } from '@/hooks/use-disclosure';
-import InvoiceDialog from './dialogs/dialog.invoice';
+import InvoiceDialog from '../dialogs/dialog.invoice';
 import useInvoiceStore from '@/lib/stores/invoice.store';
+import { useNavigate } from '@tanstack/react-router';
 
 const InvoiceTable = () => {
+    const navigate = useNavigate({
+        from:'/documents/invoices'
+    });
     const setSelectedInvoice = useInvoiceStore((state) => state.setSelectedInvoice);
     const invoiceDialog = useDisclosure(false);
     const [pagination, setPagination] = React.useState<PaginationState>({
@@ -19,6 +23,7 @@ const InvoiceTable = () => {
     });
     const [globalFilter, setGlobalFilter] = React.useState<string>('') 
     const debouncedSearchTerm = useDebounce(globalFilter, 500)
+    
 
     const {data:queryData, isLoading, isError,isFetching, error} = useQuery({
         queryKey:['invoices', pagination.pageIndex, pagination.pageSize, debouncedSearchTerm],
@@ -85,16 +90,22 @@ const InvoiceTable = () => {
             cell:props => {
                 const row = props.row.original as InvoiceParams & {id: string};
                 const onClick = () => {
-                    setSelectedInvoice({
-                        invoice_no: row.invoiceNumber as string,
-                        contractValidationStatus: row.contractValidationStatus as string,
-                        amountValidationStatus: row.attachmentValidationStatus as string,
-                        birValidationStatus: row.birValidationStatus as string,
-                        parseData: row.parsedData,
-                        id: row.id as string
+                    navigate({
+                        to:'/documents/invoices/$id',
+                        params: {
+                            id: row.id
+                        }
                     })
+                    // setSelectedInvoice({
+                    //     invoice_no: row.invoiceNumber as string,
+                    //     contractValidationStatus: row.contractValidationStatus as string,
+                    //     amountValidationStatus: row.attachmentValidationStatus as string,
+                    //     birValidationStatus: row.birValidationStatus as string,
+                    //     parseData: row.parsedData,
+                    //     id: row.id as string
+                    // })
 
-                    invoiceDialog.onOpen()
+                    // invoiceDialog.onOpen()
                 }
 
                 return <div className='grid grid-cols-2 items-center'>

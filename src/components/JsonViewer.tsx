@@ -140,15 +140,22 @@ export function JsonViewer({
         <ScrollContent maxHeight={maxHeight} className="border-0">
           {
             isLoading ? 
-            <div className='flex justify-center'>
-              <Loader2 className="h-5 w-5 animate-spin" />
-              Validating...
+            <div className={`h-full w-full absolute bg-white opacity-75`}>
+              <div className='flex flex-col h-full justify-center items-center'>
+                  <span className='flex gap-2'> 
+                    <p>Validating</p>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  </span>
+                  
+              </div>
             </div>
-            :
-             <pre className="text-sm font-mono p-4 bg-white">
-               <code>{formatJson(data)}</code>
-              </pre>
+            : null
+           
           }
+
+          <pre className="text-sm font-mono p-4 bg-white">
+            <code>{formatJson(data)}</code>
+          </pre>
          
         </ScrollContent>
       )}
