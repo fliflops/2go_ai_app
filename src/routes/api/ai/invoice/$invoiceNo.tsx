@@ -6,7 +6,7 @@ import { getInvoice, updateInvoice, updateInvoiceById } from '@/services/invoice
 //import { getDocument } from '@/services/paperless.service';
 import { invoice_tbl, InvoiceParams } from '@/db/ai_db_schema/schema';
 import { eq } from 'drizzle-orm';
-import { InvoiceData, validateInvoiceData } from '@/services/document-validation.service';
+import { validateInvoiceData } from '@/services/document-validation.service';
 import { validateBIRCompliance } from '@/services/bir-compliance.service';
 //import { chatResponse, invoiceExtractionPrompt } from '@/services/openai.service';
 

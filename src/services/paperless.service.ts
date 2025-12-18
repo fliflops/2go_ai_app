@@ -5,7 +5,6 @@ import fs from 'fs';
 
 const api = axios.create({
     baseURL: process.env.PAPERLESS_URL,
-    //timeout: ,
     headers: {
         Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
     }
@@ -35,7 +34,7 @@ export const postDocument = async(filePath: string, options?: {
 
     }
     catch(error: any){
-        console.error(error.response?.data)
+        console.log(error.response?.data)
         throw new Error(`Upload failed: ${error.response?.data?.message || error.message}`);
     }
 }
