@@ -22,9 +22,10 @@ export const postDocument = async(filePath: string, options?: {
         form.append('document', fs.createReadStream(filePath));
         if(options?.title) form.append('title', options?.title);
        
-        const response = await api().post('/api/documents/post_document/',form,{
+        const response = await axios.post(`${process.env.PAPERLESS_URL}/api/documents/post_document/`,form,{
             headers:{
-                ...form.getHeaders()
+                ...form.getHeaders(),
+                Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
             }
         });
 
