@@ -19,11 +19,11 @@ export const postDocument = async(filePath: string, options?: {
     tags?:string
 }) => {
     try{
-
+        console.log(process.env.PAPERLESS_URL)
         const form = new FormData();
         form.append('document', fs.createReadStream(filePath));
-        if(options?.title) form.append('title', options?.title)
-
+        if(options?.title) form.append('title', options?.title);
+       
         const response = await api.post('/api/documents/post_document/',form,{
             headers:{
                 ...form.getHeaders()
