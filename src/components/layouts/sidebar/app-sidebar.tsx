@@ -11,16 +11,16 @@ import {
 } from "@/components/ui/sidebar";
 
 const data = [
-    {
-        group_name: 'AI Service',
-        menu_items: [
-            {
-                name: 'AI Assistant',
-                path: '/ai/chat'
-            }
-        ]
+    // {
+    //     group_name: 'AI Service',
+    //     menu_items: [
+    //         {
+    //             name: 'AI Assistant',
+    //             path: '/ai/chat'
+    //         }
+    //     ]
 
-    },
+    // },
     {
         group_name: 'Document Upload',
         menu_items: [

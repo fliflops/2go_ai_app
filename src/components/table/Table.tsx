@@ -19,7 +19,7 @@ const Table = <TData,TValue>({
         data,
         columns,
         getCoreRowModel: getCoreRowModel(),
-        getPaginationRowModel: getPaginationRowModel()
+        //getPaginationRowModel: getPaginationRowModel()
     })
 
     return (
