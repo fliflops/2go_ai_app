@@ -2,14 +2,12 @@ import axios from 'axios';
 import FormData from 'form-data';
 import fs from 'fs';
 
-
-const api = axios.create({
+const api = () => axios.create({
     baseURL: process.env.PAPERLESS_URL,
     headers: {
         Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
     }
 })
-
 
 export const postDocument = async(filePath: string, options?: {
     title?: string;
@@ -19,12 +17,12 @@ export const postDocument = async(filePath: string, options?: {
     tags?:string
 }) => {
     try{
-        console.log(process.env.PAPERLESS_URL)
+       
         const form = new FormData();
         form.append('document', fs.createReadStream(filePath));
         if(options?.title) form.append('title', options?.title);
        
-        const response = await api.post('/api/documents/post_document/',form,{
+        const response = await api().post('/api/documents/post_document/',form,{
             headers:{
                 ...form.getHeaders()
             }
@@ -41,7 +39,7 @@ export const postDocument = async(filePath: string, options?: {
 
 export const getDocument = async(id: string ) => {
     try{
-        const response = await api.get(`/api/documents/${id}/`);
+        const response = await api().get(`/api/documents/${id}/`);
         
         return response.data;
     }
@@ -53,7 +51,7 @@ export const getDocument = async(id: string ) => {
 
 export const getUploadTask = async(uploadId: string) => {
     try{
-         const response = await api.get(`/api/tasks/`,{
+         const response = await api().get(`/api/tasks/`,{
             params: {
                 task_id: uploadId
             }
@@ -76,7 +74,7 @@ export const getDocuments = async(filters:{
 }) => {
 
     try{
-        const response = await api.get(`/api/documents/`,{
+        const response = await api().get(`/api/documents/`,{
             params:{
                 page_size: filters.limit,
                 page: filters.page,
@@ -143,7 +141,7 @@ export async function pollUntilCondition({
 
 export const getPDF = async(doc_id: string) => {
     try{
-        const response = await api.get(`/api/documents/${doc_id}/download/`,{
+        const response = await api().get(`/api/documents/${doc_id}/download/`,{
             responseType: 'arraybuffer'
         })
 
