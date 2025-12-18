@@ -34,7 +34,7 @@ export const postDocument = async(filePath: string, options?: {
 
     }
     catch(error: any){
-        console.log(error.response?.data)
+        console.log(error)
         throw new Error(`Upload failed: ${error.response?.data?.message || error.message}`);
     }
 }
