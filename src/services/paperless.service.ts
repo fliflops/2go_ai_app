@@ -40,7 +40,11 @@ export const postDocument = async(filePath: string, options?: {
 
 export const getDocument = async(id: string ) => {
     try{
-        const response = await api().get(`/api/documents/${id}/`);
+        const response = await axios.get(`${process.env.PAPERLESS_URL}/api/documents/${id}/`,{
+            headers: {
+                Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
+            }
+        });
         
         return response.data;
     }
@@ -52,7 +56,10 @@ export const getDocument = async(id: string ) => {
 
 export const getUploadTask = async(uploadId: string) => {
     try{
-         const response = await api().get(`/api/tasks/`,{
+         const response = await axios.get(`${process.env.PAPERLESS_URL}/api/tasks/`,{
+            headers: {
+                Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
+            },
             params: {
                 task_id: uploadId
             }
@@ -75,7 +82,10 @@ export const getDocuments = async(filters:{
 }) => {
 
     try{
-        const response = await api().get(`/api/documents/`,{
+        const response = await axios.get(`${process.env.PAPERLESS_URL}/api/documents/`,{
+            headers: {
+                Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
+            },
             params:{
                 page_size: filters.limit,
                 page: filters.page,
@@ -142,7 +152,7 @@ export async function pollUntilCondition({
 
 export const getPDF = async(doc_id: string) => {
     try{
-        const response = await api().get(`/api/documents/${doc_id}/download/`,{
+        const response = await axios.get(`${process.env.PAPERLESS_URL}/api/documents/${doc_id}/download/`,{
             responseType: 'arraybuffer'
         })
 
