@@ -95,16 +95,18 @@ export const updateInvoice = async (params:{where:{
     id: string
 }; data:{
     parsedData: any;
-    contractValidationStatus: string;
+    attachmentValidationStatus:string;
     amountValidationStatus:string;
+    birValidationStatus: string;
 }}) => {
 
     const {where,data} = params;
 
     await db.update(invoice_tbl).set({
         parsedData: data.parsedData,
-        contractValidationStatus: data.contractValidationStatus,
-        amountValidationStatus: data.amountValidationStatus
+        attachmentValidationStatus: data.attachmentValidationStatus,
+        amountValidationStatus: data.amountValidationStatus,
+        birValidationStatus: data.birValidationStatus
     })
     .where(eq(invoice_tbl.id, where.id))
 } 

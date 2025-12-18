@@ -20,8 +20,8 @@ const InvoicePDFViewer = (props:pdfViewer) => {
 
             return response.arrayBuffer()
         },
-        staleTime: 1000 * 60 * 2, // 2 minutes
-        gcTime: 1000 * 60 * 5, // 5 minutes
+        // staleTime: 1000 * 60 * 2, // 2 minutes
+        // gcTime: 1000 * 60 * 5, // 5 minutes
 
     })
 
@@ -32,17 +32,16 @@ const InvoicePDFViewer = (props:pdfViewer) => {
         script.async = true;
         document.body.appendChild(script);
 
-        return () => {
-            document.body.removeChild(script);
-        };
+            return () => {
+                document.body.removeChild(script);
+            };
         }
   }, []);
 
     return (
         <div className='border p-2'>
             <PDFViewer 
-                    pdfData={isLoading ? null : pdfData || null} 
-                    
+                    pdfData={pdfData || null} 
                     initialScale={1}
                     title='Invoice Document'
                     //onError={(error) => console.error(error)}

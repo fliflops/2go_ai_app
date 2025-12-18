@@ -6,8 +6,8 @@ import InvoiceLabel from '../-components/invoice.label';
 import InvoiceDetailTable from '../-components/tables/invoice.details.table';
 import { JsonViewer } from '@/components/JsonViewer';
 import { AlertCircle, CheckCircle2, Loader2 } from 'lucide-react';
-import PDFViewer from '@/components/PDFViewer';
 import InvoicePDFViewer from '../-components/invoice.pdf';
+import InvoiceAccordion from '../-components/invoice.accordion';
 
 export const Route = createFileRoute('/documents/invoices/$id')({
   component: RouteComponent,
@@ -62,32 +62,7 @@ function RouteComponent() {
             id: invoiceState?.data.id as string
         })
     }
-
-	const showRagValidations = () => {
-		const data = invoiceState.data.parsedData.rag_validation
-		return (<div className='grid grid-cols-2 gap-3'>
-
-			<Label className='text-md col-span-2'>Validation Results</Label>
-			<div className='flex flex-col gap-3'>
-				<InvoiceLabel label='Contract Reference' value={data.vendor_validation.contract_reference}/>
-				<InvoiceLabel label='Contract Compliant?' value={data.contract_compliant ? 'Yes' : 'No'}/>
-				<InvoiceLabel label='Overall Status' value={data.overall_status}/>
-				<InvoiceLabel label='Overall Amount Validation' value={data.overall_amount_validation}/>
-				<InvoiceLabel label='Confidence Score' value={data.confidence_score}/>
-			</div>
-			<div className='flex flex-col gap-3'>
-				<InvoiceLabel label='Vendor Authorized?' value={data.vendor_validation.vendor_authorized ? 'Yes': 'No'}/>
-				<InvoiceLabel label='Contract Active?' value={data.vendor_validation.contract_active ? 'Yes' : 'No'}/>
-				<InvoiceLabel label='Within Contract Period?' value={data.date_validation.within_contract_period ? 'Yes': 'No'}/>
-				<InvoiceLabel label='Due Date Compliant?' value={data.date_validation.due_date_compliant ? 'Yes' : 'No'}/>
-			</div>
-			<div className='col-span-2 flex flex-col gap-2'>
-				<Label className='text-md'>Validated Item Information</Label>
-				<InvoiceDetailTable data={invoiceState.data.parsedData?.rag_validation?.line_items_validation || []}/>
-			</div>
-		</div>)
-	} 
-
+ 
 	if(isLoading && !isError) return <>Loading Data...</>
 
 	if(isError) return <div className='flex flex-col'>
@@ -157,18 +132,10 @@ function RouteComponent() {
 			)}
 					
 			<div className='mt-5 flex flex-col gap-2'>
-					
-				<div className='grid grid-cols-5'>
-					<Label>{invoiceState.data.invoiceNumber}</Label>
-					<Label>Documents: <p className='text-muted-foreground'>{invoiceState?.data.amountValidationStatus}</p></Label>
-					<Label>BIR Compliance: <p className='text-muted-foreground'>{invoiceState?.data.birValidationStatus}</p></Label>
-					<Label>Amount Validation: <p className='text-muted-foreground'>{invoiceState?.data.amountValidationStatus}</p></Label>
-					<Label>Contract Validation: <p className='text-muted-foreground'>{invoiceState?.data.contractValidationStatus}</p></Label>
-				</div>
 				<div className='mt-2 grid grid-cols-2 gap-5'>
 					<Label className='text-md col-span-2'>Invoice Information</Label>
 					<div className='flex flex-col gap-3'>
-						
+						<InvoiceLabel label='Invoice #' value={invoiceState.data.invoiceNumber}/>
 						<InvoiceLabel label='Customer Name' value={invoiceState?.data?.parsedData.customer_name}/>
 						<InvoiceLabel label='Vendor Name' value={invoiceState?.data?.parsedData.vendor_name}/>
 
@@ -184,16 +151,35 @@ function RouteComponent() {
 					</div>
 				</div>
 				<div className='mt-2'>
-					{
-						invoiceState?.data?.parsedData?.rag_validation ? showRagValidations() : 
-						<div className='flex h-16 items-center justify-center border rounded-md'>
-							No Contract Validations Yet
-						</div>
-					}
+					<InvoiceAccordion 
+						ocr_id={invoiceState.data.ocr_id}
+						birComplianceStatus={invoiceState?.data?.birValidationStatus}
+						birCompliance={invoiceState?.data?.parsedData?.bir_compliance}
+						
+						attachmentValidationStatus={invoiceState?.data?.attachmentValidationStatus}
+						attachments={[
+							{
+								attachment: 'form_2307_attached',
+								value: invoiceState?.data?.parsedData?.form_2307_attached? 'Yes' : 'No'
+							},
+							{
+								attachment: 'form_2307_consistent',
+								value: invoiceState?.data?.parsedData?.form_2307_consistent? 'Yes' : 'No' 
+							}
+						]}
+						
+						amountValidationStatus={invoiceState?.data?.amountValidationStatus}
+						amountValidationData={invoiceState?.data?.parsedData?.rag_validation ? {
+							contract_compliant:invoiceState?.data?.parsedData.rag_validation.contract_compliant,
+							overall_status:invoiceState?.data?.parsedData.rag_validation.overall_status,
+							overall_amount_validation:invoiceState?.data?.parsedData.rag_validation.overall_amount,
+							confidence_score:invoiceState?.data?.parsedData.rag_validation.confidence_score,
+							vendor_validation: invoiceState?.data?.parsedData.rag_validation.vendor_validation,
+							amount_validation: invoiceState?.data?.parsedData.rag_validation.amount_validation,
+							line_items_validation: invoiceState?.data?.parsedData.rag_validation.line_items_validation
+						} : null }
+					/>
 				</div>
-
-				<InvoicePDFViewer ocrId={invoiceState.data.ocr_id}/>
-
 				<JsonViewer
 					isLoading={validateMutation.isPending}
 					className='w-full'

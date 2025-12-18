@@ -153,7 +153,10 @@ export async function pollUntilCondition({
 export const getPDF = async(doc_id: string) => {
     try{
         const response = await axios.get(`${process.env.PAPERLESS_URL}/api/documents/${doc_id}/download/`,{
-            responseType: 'arraybuffer'
+            responseType: 'arraybuffer',
+            headers: {
+                Authorization: `Token ${process.env.PAPERLESS_TOKEN}`
+            }
         })
 
         return response.data

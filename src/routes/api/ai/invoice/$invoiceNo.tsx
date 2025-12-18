@@ -68,12 +68,13 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
 
                 let validationStatus = {
                     attachmentValidationStatus: invoice.attachmentValidationStatus,
-                    birValidationStatus: invoice.birValidationStatus,
+                    birValidationStatus:        invoice.birValidationStatus,
                     contractValidationStatus: invoice.contractValidationStatus,
                     amountValidationStatus: invoice.amountValidationStatus   
                 }
 
-                if(statusForValidation.includes(invoice.attachmentValidationStatus as string) || statusForValidation.includes(invoice.birValidationStatus as string)){
+
+                if(statusForValidation.includes(invoice.attachmentValidationStatus as string)){
                     const documentValidationResult = await validateInvoiceData(
                         invoice.parsedData,
                         'bir_invoice'
@@ -81,17 +82,13 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
 
                     const documentValidationStatus = documentValidationResult.isValid ? 'success' : 'failed';
 
-                    await updateInvoiceById({
-                        id,
-                        data: {
-                            attachmentValidationStatus: documentValidationStatus
-                        }
-                    });
+                     validationStatus = {
+                        ...validationStatus,
+                        attachmentValidationStatus: documentValidationStatus,
+                    }
+                }
 
-                    // if (!documentValidationResult.isValid){
-                    //     return;
-                    // }
-
+                if(statusForValidation.includes(invoice.birValidationStatus as string)){
                     const birComplianceResult = await validateBIRCompliance(
                         invoice.parsedData,
                         'official_bir_compliance'
@@ -99,40 +96,14 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
 
                     const birComplianceStatus = birComplianceResult.isCompliant ? 'success' : 'failed';
 
-                    await updateInvoiceById({
-                        id,
-                        data: {
-                            birValidationStatus: birComplianceStatus
-                        }
-                    });
-
-                    // if (!documentValidationResult.isValid){
-                    //     return;
-                    // }
-                    
-                //     const paperlessDoc = await getDocument(String(invoice.ocr_id));
-                //     const openAiPrompt = invoiceExtractionPrompt(paperlessDoc.content);
-                //     const openAiOutput = await chatResponse({
-                //         instructions:'Philippine Invoice Data Extraction Specialist',
-                //         input: openAiPrompt
-                //     })
-                //     const openAiOutputParse = formatTextToJson(openAiOutput.output_text)
-
-                //     parsedData = {
-                //         ...parsedData,
-                //         ...openAiOutputParse
-                //     }
-
-                //     validationStatus={
-                //         ...validationStatus,
-                //         attachmentValidationStatus: 'pending',
-                //         birValidationStatus: 'pending'  
-                //     }
+                    validationStatus = {
+                        ...validationStatus,
+                        birValidationStatus: birComplianceStatus
+                    }
                 }
 
-
-                if(statusForValidation.includes(invoice.contractValidationStatus as string) || statusForValidation.includes(invoice.amountValidationStatus as string)){
-                    const generatePrompt = contractValidationPrompt(invoice_no);
+                if(statusForValidation.includes(invoice.amountValidationStatus as string)){
+                     const generatePrompt = contractValidationPrompt(invoice_no);
                     const chatResponse = await sendMessage({
                         message: generatePrompt
                     })
@@ -150,43 +121,30 @@ export const Route = createFileRoute('/api/ai/invoice/$invoiceNo')({
                         ...parsedData,
                         rag_validation:aiOutput
                     }
-                    
+
                     validationStatus = {
                         ...validationStatus,
-                        contractValidationStatus: aiOutput.recommendations.action_required === 'APPROVED' ? 'success' : 'failed',
                         amountValidationStatus: aiOutput.overall_amount_validation === 'APPROVED' ? 'success': 'failed'
                     }
+                }
 
-                    await updateInvoice({
-                        data: {
-                            parsedData,
-                            contractValidationStatus: validationStatus.contractValidationStatus as string,
-                            amountValidationStatus: validationStatus.amountValidationStatus as string
-                        },
-                        where:{
-                            id
-                        }
-                    })
-                }   
+                await updateInvoice({
+                    data: {
+                        parsedData,
+                        amountValidationStatus: validationStatus.amountValidationStatus as string,
+                        attachmentValidationStatus: validationStatus.attachmentValidationStatus as string,
+                        birValidationStatus: validationStatus.birValidationStatus as string
+                    },
+                    where:{
+                        id
+                    }
+                })
 
                 return json({
                     success:true,
                     validationStatus,
                     parsedData
                 });
-
-                // const validationStatus = aiOutput.recommendations.action_required === 'APPROVED' ? 'Success' : 'Failed'
-            
-                // //check for response
-                // await updateInvoiceTransaction({
-                //     where:{
-                //         id
-                //     },
-                //     data:{
-                //         validationDetails: aiOutput,
-                //         contractValidationStatus: validationStatus
-                //     }
-                // })
 
             }
             catch(error: any){
