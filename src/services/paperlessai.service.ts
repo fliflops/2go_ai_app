@@ -5,33 +5,44 @@ import { CookieJar } from 'tough-cookie';
 // 1. Create the Cookie Jar
 const jar = new CookieJar();
 
-// 2. Create and wrap the Axios instance
-// The wrapper adds logic to handle the jar automatically
-const client = wrapper(axios.create({
-    baseURL: process.env.PAPERLESSAI_URL,
-    // Pass the jar instance to the Axios config
-    jar: jar, 
+// // 2. Create and wrap the Axios instance
+// // The wrapper adds logic to handle the jar automatically
+// const client = wrapper(axios.create({
+//     baseURL: process.env.PAPERLESSAI_URL,
+//     // Pass the jar instance to the Axios config
+//     jar: jar, 
     
-    // IMPORTANT: You must set withCredentials to true to enable cookie sending
-    withCredentials: true, 
-}));
+//     // IMPORTANT: You must set withCredentials to true to enable cookie sending
+//     withCredentials: true, 
+// }));
 
-export const getCookies = async() => {
+// export const getCookies = async() => {
 
-    await client.post('/login',{
-        username:process.env.PAPERLESSAI_USER,
-        password:process.env.PAPERLESSAI_PASSWORD
-    })
+//     await client.post('/login',{
+//         username:process.env.PAPERLESSAI_USER,
+//         password:process.env.PAPERLESSAI_PASSWORD
+//     })
 
-    const cookie = await jar.getCookies(`${process.env.PAPERLESSAI_URL}/api/rag/status`)   
-    return cookie.map(c => c.toString())
+//     const cookie = await jar.getCookies(`${process.env.PAPERLESSAI_URL}/api/rag/status`)   
+//     return cookie.map(c => c.toString())
   
-}
+// }
 
 
 export const sendMessage = async({
     message=''
 }: {message:string}) => {
+    // 2. Create and wrap the Axios instance
+    // The wrapper adds logic to handle the jar automatically
+    const client = wrapper(axios.create({
+        baseURL: process.env.PAPERLESSAI_URL,
+        // Pass the jar instance to the Axios config
+        jar: jar, 
+        
+        // IMPORTANT: You must set withCredentials to true to enable cookie sending
+        withCredentials: true, 
+    }));
+
     await client.post('/login', {
         username:process.env.PAPERLESSAI_USER,
         password:process.env.PAPERLESSAI_PASSWORD
