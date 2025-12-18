@@ -9,7 +9,9 @@ type tableTypes = {
     line_total_invoice: number;
     contract_unit_price: number;
     item_status: string;
-    contract_rate_compliant: boolean
+    contract_rate_compliant: boolean;
+    cited_from: string;
+    remarks: string;
 }
 
 interface InvoiceDetailTableType {
@@ -49,6 +51,14 @@ const InvoiceDetailTable = ({
         {
             accessorKey: 'item_status',
             header:'Item Status'
+        },
+        {
+            accessorKey: 'cited_from',
+            header:'Cited From'
+        },
+        {
+            accessorKey:'remarks',
+            header:'Remarks'
         }
       
     ]

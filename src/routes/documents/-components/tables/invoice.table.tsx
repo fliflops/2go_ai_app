@@ -10,6 +10,7 @@ import { useDisclosure } from '@/hooks/use-disclosure';
 import InvoiceDialog from '../dialogs/dialog.invoice';
 import useInvoiceStore from '@/lib/stores/invoice.store';
 import { useNavigate } from '@tanstack/react-router';
+import { Label } from '@radix-ui/react-label';
 
 const InvoiceTable = () => {
     const navigate = useNavigate({
@@ -52,6 +53,12 @@ const InvoiceTable = () => {
         setGlobalFilter(value)
     }
 
+    const renderStatus = (status:string) => {
+        return <Label className={`font-semibold ${status === 'success' ? 'text-green-800' : status === 'failed' ? 'text-red-800' : 'text-muted-foreground' }`}>
+            {status}
+        </Label>
+    }
+
     const columns: ColumnDef<InvoiceParams>[] = [
         {
             accessorKey: 'ocr_id',
@@ -71,19 +78,27 @@ const InvoiceTable = () => {
         },
         {
             accessorKey: 'attachmentValidationStatus',
-            header:'Documents'
+            header:'Documents',
+            cell(props) {
+                const data = props.getValue()
+                return renderStatus(data as string)
+            },
         },
         {
             accessorKey:'birValidationStatus',
-            header:'BIR Compliance'
+            header:'BIR Compliance',
+            cell(props) {
+                const data = props.getValue()
+                return renderStatus(data as string)
+            },
         },
         {
             accessorKey:'amountValidationStatus',
-            header:'Amount Validation'
-        },
-        {
-            accessorKey:'contractValidationStatus',
-            header:'Contract Validation'
+            header:'Amount Validation',
+            cell(props) {
+                const data = props.getValue()
+                return renderStatus(data as string)
+            },
         },
         {
             header:'Action',

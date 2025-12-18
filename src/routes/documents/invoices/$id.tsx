@@ -19,7 +19,7 @@ function RouteComponent() {
 	const queryClient = useQueryClient();
 
 	const {id} = useParams({from:'/documents/invoices/$id'});
-	const {data:invoiceState, isLoading, isError} = useQuery({
+	const {data:invoiceState, isLoading, isError, refetch} = useQuery({
 		queryKey:['invoice',id],
 		queryFn: async() => {
 			const response = await fetch('/api/ai/invoice/'+id,{
@@ -53,6 +53,7 @@ function RouteComponent() {
             queryClient.invalidateQueries({
                 queryKey: ['invoices','invoice']
             })
+			refetch()
         }
     })
 
@@ -103,7 +104,7 @@ function RouteComponent() {
 					<AlertCircle className="h-5 w-5 text-red-500" />
 					<div>
 					<p className="text-sm font-semibold text-red-800">
-						Upload failed
+						Validation Failed
 					</p>
 					<p className="text-xs text-red-600 mt-0.5">
 						{validateMutation.error.message}
@@ -121,10 +122,10 @@ function RouteComponent() {
 					</div>
 					<div>
 					<p className="text-sm font-semibold text-green-800">
-						Upload successful!
+						Validate Success
 					</p>
 					<p className="text-xs text-green-600 mt-0.5">
-						Your files have been uploaded successfully
+						The data is successfully validated.
 					</p>
 					</div>
 				</div>
@@ -174,6 +175,7 @@ function RouteComponent() {
 							overall_status:invoiceState?.data?.parsedData.rag_validation.overall_status,
 							overall_amount_validation:invoiceState?.data?.parsedData.rag_validation.overall_amount,
 							confidence_score:invoiceState?.data?.parsedData.rag_validation.confidence_score,
+							date_validation: invoiceState?.data?.parsedData.rag_validation.date_validation,
 							vendor_validation: invoiceState?.data?.parsedData.rag_validation.vendor_validation,
 							amount_validation: invoiceState?.data?.parsedData.rag_validation.amount_validation,
 							line_items_validation: invoiceState?.data?.parsedData.rag_validation.line_items_validation

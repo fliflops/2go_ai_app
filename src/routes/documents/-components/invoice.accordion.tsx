@@ -40,14 +40,13 @@ const InvoiceAccordion = (props:AccordionDataTypes) => {
 				<InvoiceLabel label='Contract Reference' value={data.vendor_validation.contract_reference}/>
 				<InvoiceLabel label='Contract Compliant?' value={data.contract_compliant ? 'Yes' : 'No'}/>
 				<InvoiceLabel label='Overall Status' value={data.overall_status}/>
-				<InvoiceLabel label='Overall Amount Validation' value={data.overall_amount_validation}/>
 				<InvoiceLabel label='Confidence Score' value={data.confidence_score}/>
 			</div>
 			<div className='flex flex-col gap-3'>
-				{/* <InvoiceLabel label='Vendor Authorized?' value={data.vendor_validation.vendor_authorized ? 'Yes': 'No'}/>
+				<InvoiceLabel label='Vendor Authorized?' value={data.vendor_validation.vendor_authorized ? 'Yes': 'No'}/>
 				<InvoiceLabel label='Contract Active?' value={data.vendor_validation.contract_active ? 'Yes' : 'No'}/>
 				<InvoiceLabel label='Within Contract Period?' value={data.date_validation.within_contract_period ? 'Yes': 'No'}/>
-				<InvoiceLabel label='Due Date Compliant?' value={data.date_validation.due_date_compliant ? 'Yes' : 'No'}/> */}
+				<InvoiceLabel label='Due Date Compliant?' value={data.date_validation.due_date_compliant ? 'Yes' : 'No'}/>
 			</div>
 			<div className='col-span-2 flex flex-col gap-2'>
 				<Label className='text-md'>Validated Item Information</Label>
